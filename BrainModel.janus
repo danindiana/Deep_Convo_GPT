@@ -1,0 +1,22 @@
+proc forward_memory_store
+  from x
+  to m
+do
+  m += x
+end
+
+proc backward_memory_store
+  from m
+  to x
+do
+  m -= x
+end
+
+proc memory_store (int x, int m)
+do
+  if x = 0 then
+    forward_memory_store from x to m
+  else
+    backward_memory_store from m to x
+  endif
+end
