@@ -1,0 +1,41 @@
+#include <iostream>
+
+// Class representing the sensory receptors of the jumping spider
+class SensoryReceptors {
+private:
+    // Member variables
+    // ...
+
+public:
+    // Constructors
+    SensoryReceptors() {
+        // Default constructor
+        // ...
+    }
+
+    // Destructor
+    ~SensoryReceptors() {
+        // Destructor
+        // ...
+    }
+
+    // Member functions
+    void detectMovement() {
+        // Method to detect movement in the spider's surroundings
+        // ...
+    }
+
+    void perceiveDepth() {
+        // Method to perceive depth using the principal eyes
+        // ...
+    }
+
+    void senseColor() {
+        // Method to sense color using the principal eyes
+        // ...
+    }
+
+    // Additional member functions
+    // ...
+};
+
