@@ -1,0 +1,257 @@
+It is possible to compute over encrypted data without access to the secret key.
+
+It is possible to prove that you know a value x, without conveying any information apart from the fact that you know the value x.
+
+It is possible to play poker by telephone in a trusted way which prevents cheating.
+
+If customers take on average 10 minutes to serve and they arrive randomly at a rate of 5.8 per hour then the waiting time for one teller is five hours while the waiting time for two tellers is 3 minutes.
+
+There exists a set of three dice, A, B, and C, with the property that A rolls higher than B more than half the time, and B rolls higher than C more than half the time, but it is not true that A rolls higher than C more than half the time.
+
+Causation does not imply correlation.
+
+The Earth makes 366.25 rotations around its axis per year. (Related: 0% selected the right answer on this SAT question: Circle A has 1/3 the radius of circle B, and circle A rolls one trip around circle B. How many times will circle A revolve in total?)
+
+There is a surface that has only one side.
+
+It is possible to travel downwind faster than the wind (for a mechanical demonstration see: Under the ruler faster than the ruler).
+
+It is possible to read out the results of events that 'didn't happen' and whose 'probability of happening' can be driven arbitrarily low.
+
+Knowing just slightly more about the value of your car than a potential buyer can make it impossible to sell it.
+
+Closing roads can improve everyone’s commute time.
+
+If you pay the value you think something is worth, you are going to end up with a negative net profit.
+
+Adding 3 feet to a tightly tied rope around the earth would allow you to raise it uniformly by almost 6 inches.
+
+Two 12 Inch Pizzas have less Pizza than one 18 inch pizza.
+
+If you let a 100g strawberry that is 99% water by mass dehydrate such that the water now accounts for 98% of the total mass then its new mass is 50g.
+
+At any given moment on the earth's surface, there exist 2 antipodal points (on exactly opposite sides of the earth) with the same temperature and barometric pressure.
+
+100 prisoners problem -- The Riddle That Seems Impossible Even If You Know The Answer.
+
+A one-in-billion event will happen 8 times a month.
+
+If you have galaxies of the same size at different distances, beyond a certain distance, the farther away the galaxy is the BIGGER it appears in the sky.
+
+Given a solid ball in 3‑dimensional space, there exists a decomposition of the ball into a finite number of disjoint subsets, which can then be put back together in a different way to yield two identical copies of the original ball.
+
+A system cannot change while you are watching it.
+
+In two dimensions, there are infinitely many regular polygons. In three dimensions, there are five Platonic solids. In four dimensions, there are six platonic polychora. In all higher dimensions than four, there are only ever three regular polytopes (Maths 1001, Richard Elwes).
+
+There are as many whole positive numbers as all fractions (including the whole negative and whole positive numbers).
+
+There is a shape with a finite volume but an infinite surface area (Gabriel’s Horn).
+
+There are infinite sets that can be exhaustively searched over in finite time.
+
+There are constant width curves other than a circle.
+
+Any positive rational number x can be written as a finite sum of distinct numbers of the form 1/n (Calculus, 4th edition by Michael Spivak).
+
+Let alpha = 0.110001000000000000000001000..., where the 1's occur in the n! place, for each n. Then alpha is transcendental (Calculus, 4th edition by Michael Spivak).
+
+There are sequences of numbers which grow unimaginably enormous and continue for an unimaginably long number of terms...but which always eventually get back down to zero.
+
+The vast majority of real numbers can't be described. But it is impossible to give a single example.
+
+There exists a curve which fills an entire square.
+
+There is a continuous and nowhere differentiable function.
+
+At any given time, there live at least two people in California with the same number of hairs on their heads.
+
+"...if you flip fair coins to generate n-dimensional vectors (heads => 1, tails => -1) then the probability they're linearly independent is at least 1-(1/2 + o(n))^n. I.e., they're very very likely independent!"
+
+An initial datapoint can be valuable, and the second worthless, but the third valuable again (due to discreteness of choice).
+
+If every truth is knowable, then every truth is known.
+
+Borromean rings: "No two of them link, but the three cannot be pulled apart. The three rings are trapped together until one of them leaves and sets the others free."
+
+Sure! Here is a list of similar interesting and counterintuitive facts:
+
+1. It is possible to send messages faster than the speed of light using quantum entanglement.
+
+2. The Monty Hall problem in probability, where switching your choice gives you a higher chance of winning.
+
+3. The Banach-Tarski paradox in mathematics, which shows that it is possible to decompose a solid ball into a finite number of pieces and reassemble them to create two identical copies of the original ball.
+
+4. The Liar Paradox, where a statement refers to itself in a way that creates a logical contradiction.
+
+5. The Poincaré recurrence theorem, stating that in a finite, isolated system, every state will eventually recur an infinite number of times.
+
+6. The Tupper's self-referential formula, a mathematical equation that graphs itself on a bitmap.
+
+7. The Birthday Paradox, which shows that in a group of just 23 people, there is a 50% chance that two of them share the same birthday.
+
+8. The Penrose stairs, an optical illusion where a staircase appears to be constantly ascending.
+
+9. The Penrose triangle, an impossible geometric shape that cannot exist in 3D space.
+
+10. The EPR paradox in quantum mechanics, which highlights the strange phenomenon of entangled particles having instantaneous correlations regardless of distance.
+
+11. The Twin Paradox, a thought experiment in special relativity where one twin ages slower than the other during a space journey.
+
+12. The Zeno's Paradoxes, a set of philosophical riddles that question the concept of motion and continuity.
+
+13. The Sorites Paradox, which deals with the problem of vagueness and how small incremental changes can lead to significant differences.
+
+14. The Hilbert's Hotel paradox, a concept in set theory showing that an infinite hotel can accommodate more guests even if it's already full.
+
+15. The Droste Effect, a recursive visual effect where a picture contains a smaller version of itself, which in turn contains an even smaller version, and so on.
+
+16. The Ship of Theseus paradox, a philosophical dilemma about identity and change, where a ship's parts are replaced over time until none of the original components remain.
+
+17. The Card paradox, where a standard deck of cards can be shuffled in such a way that it returns to its original order.
+
+18. The Incompleteness Theorems by Gödel, showing that there are true mathematical statements that cannot be proven within a given formal system.
+
+19. The Twin Prime conjecture, proposing that there are infinitely many pairs of primes that are only two apart from each other.
+
+20. The Arrow paradox, examining how motion is perceived in a series of discrete snapshots.
+
+These intriguing and counterintuitive facts continue to challenge our understanding of the world and push the boundaries of our knowledge.
+
+GPT-4 says:
+
+1. A quantum computer can perform tasks that a classical computer cannot, even though both process binary data.
+
+2. The coastline paradox: The length of a coastline depends on the length of the measuring tool used, meaning it can be effectively infinite.
+
+3. The Banach–Tarski Paradox: A solid ball can be separated and reassembled into two solid balls, each with the same volume as the original.
+
+4. The Monty Hall problem: In a game show, you should always switch your choice after the host reveals a goat behind one of the other doors.
+
+5. St. Petersburg paradox: A game with an infinite expected value may still be undesirable.
+
+6. Adding heat to a system can make it cooler, seen in laser cooling.
+
+7. The Mpemba effect: Hot water can freeze faster than cold water.
+
+8. The Bootstrap paradox: A time traveler could bring an object or information into the past, which then becomes the very object or information that was initially brought back in the first place.
+
+9. A Zeno paradox: You will never reach a wall you are walking towards because you must first reach half the distance, then half the remaining distance, and so on.
+
+10. Simpson's paradox: A trend can appear in different groups of data but disappear or reverse when the groups are combined.
+
+11. In quantum physics, particles can be in two places at the same time (superposition).
+
+12. Birthday paradox: In a group of just 23 people, there's a 50% chance that at least two people have the same birthday.
+
+13. The Fermi Paradox: With billions of potentially habitable planets in the universe, why haven't we detected signs of alien life?
+
+14. In an infinitely expanding universe, given enough time, anything that is possible will eventually happen.
+
+15. The measure problem: Most universes, in the sense of a volume measure, will not contain any observers because they will almost always expand too fast or recollapse too soon for life to develop.
+
+16. A weaker player has a better chance of winning a series of games by intentionally losing the first game.
+
+17. In a group of four or more people, some people are either all mutual friends or all mutual strangers (Ramsey's theorem).
+
+18. Averaging the averages of different populations can lead to incorrect conclusions.
+
+19. The Hardy–Weinberg principle: the genetic makeup of a population will remain constant over generations unless acted upon by evolutionary influences.
+
+20. In many languages, the most frequently used word occurs twice as often as the second most frequently used word, three times as often as the third most frequent word, etc. (Zipf's law).
+
+21. As the number of risk factors you screen for increases, the chance of a false positive also increases.
+
+22. The paradox of tolerance: If a society is too tolerant without limit, its ability to be tolerant will eventually be seized or destroyed by the intolerant.
+
+23. The Peto's paradox: Larger animals should have higher cancer rates than smaller ones, but generally, they do not.
+
+24. Lanchester's laws: The power of an army is proportional to the square of the number of its units.
+
+25. Unexpected hanging paradox: A sentenced prisoner cannot hang on a day he expects, yet he can still be hanged unexpectedly.
+
+26. There are some problems which can be easily checked but whose solutions can't be feasibly computed (P vs NP problem).
+
+27. A computer program can determine whether any given program will halt or run forever, but not when it is applied to itself (Halting problem).
+
+28. There are more possible iterations of a game of chess than there are atoms in the known universe.
+
+29. A photon that is emitted from the sun takes 40,000 years to reach the sun's surface but only 8 minutes to reach the Earth.
+
+30. The most common number in many datasets is 1 (Benford's law).
+
+31. In a randomly chosen group of 23 people, the probability of a pair of them sharing the same birthday is over 50%.
+
+32. It is possible to fold a piece of paper in half more than 7 times.
+
+33. There is a deterministic mathematical model that can appear to behave completely unpredictably (Lorenz system).
+
+34. A gas, when compressed, can become cooler instead of hotter.
+
+35. Human DNA is over 98% identical to chimpanzee DNA, yet we are distinctly different species.
+
+36. It takes more than nine months to make a baby: the initial stages of human embryogenesis begin well before conception.
+
+37. Dying stars create the building blocks of life, including elements like carbon and nitrogen.
+
+38. Paradox of thrift: If everyone tries to save more money during times of recession, overall savings will decline because one person's spending is another person's income.
+
+39. The faster an object moves, the heavier and shorter it becomes from the perspective of a stationary observer (Special relativity).
+
+Consider the following facts and then Generate a list of similiar counterintuitive or surprising facts as they relate to information theory, theories of computation, communication, and cryptography. : 
+
+It is possible to compute over encrypted data without access to the secret key.
+
+It is possible to prove that you know a value x, without conveying any information apart from the fact that you know the value x.
+
+It is possible to play poker by telephone in a trusted way which prevents cheating.
+
+1. Quantum teleportation allows for the transfer of information between quantum states without any physical matter moving through space.
+
+2. It is possible to build a physical device, called a quantum computer, that can factor large integers in a short amount of time, which would render much of today's encryption methods useless.
+
+3. Erasure codes enable one to recover complete information from partial data. These are used in RAID systems in hard drives, where even if one disk fails, no data is lost.
+
+4. In network communication, it's more efficient to send a single packet of data to multiple recipients (multicasting) than it is to send individual packets to each recipient.
+
+5. Storing one bit of digital information can theoretically cool a system by up to a certain limit known as Landauer's principle.
+
+6. While you can compress data, there is a fundamental limit to how much you can compress. This is given by Shannon's source coding theorem.
+
+7. Error correction codes can help retrieve the original information even when some parts of the data are lost or corrupted during transmission.
+
+8. The P vs NP problem is one of the seven "millennium prize problems" in mathematics. If P equals NP, then the world of cryptography would be turned on its head as all currently secure ciphers could be decrypted easily.
+
+9. Quantum entanglement can be used for "superdense" coding, doubling the amount of information sent between two parties.
+
+10. Theoretically, a quantum computer could break almost all of the Internet's current encryption in a matter of hours or days.
+
+11. Certain cryptographic systems remain secure even if an adversary has complete knowledge of the system's workings, except for the secret key (Kerckhoffs's Principle).
+
+12. In digital circuit design, it is possible to create a circuit that produces no net energy loss – a reversible gate.
+
+13. In cellular automata, incredibly complex behavior and patterns can emerge from simple rules and initial conditions (Conway's Game of Life).
+
+14. It is possible to have a data storage system where it is cheaper to re-compute the data every time you need it rather than storing it for later use.
+
+15. A cryptographic hash function can take input data of any size and produce a fixed-size output, and it is computationally infeasible to regenerate the original input given only the hash output.
+
+16. With homomorphic encryption, it is possible to perform calculations on encrypted data without decrypting it first.
+
+17. Public-key cryptography systems make secure communications possible without the sender and receiver ever needing to have a shared, secret key in advance.
+
+18. In the field of information theory, it is impossible to perfectly replicate some quantum states due to the "no-cloning" theorem.
+
+19. The same string of bits can represent vastly different things based on context. For example, 01100101 could represent the letter "e", a color, or part of a computer program.
+
+20. You can have more than two logical states in computing. Quantum computing, for example, relies on qubits, which can exist in multiple states at once.
+
+21. In steganography, you can hide information in other information in such a way that the very existence of the message is concealed.
+
+22. Zero-knowledge proofs are cryptographic methods where one party (the prover) can prove to another party (the verifier) that they know a value x, without conveying any information apart from the fact that they know the value x.
+
+23. The concept of "perfect secrecy" in cryptography: it's possible to create a code so secure that even someone with unlimited computational power cannot break it, like the One-time pad.
+
+24. Some cellular automata, despite their simple defining rules, are Turing complete, meaning they can simulate a Turing machine and thus compute anything that is computationally possible.
+
+25. A seemingly random sequence of numbers could be the result of a deterministic algorithm, and yet be statistically indistinguishable from true randomness (Pseudorandom number generators).
