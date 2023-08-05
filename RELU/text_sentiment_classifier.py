@@ -29,7 +29,7 @@ def preprocess(texts, labels):
     label_encoder = LabelEncoder()
     y = label_encoder.fit_transform(labels)
 
-    return X.toarray(), y
+    return X.toarray(), y, vectorizer
 
 def build_model(input_dim):
     model = Sequential()
@@ -41,20 +41,20 @@ def build_model(input_dim):
 
 def train_model(X_train, y_train):
     model = build_model(X_train.shape[1])
-    optimizer = Adam(lr=0.001)
+    optimizer = Adam(learning_rate=0.001)
     model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['accuracy'])
     model.fit(X_train, y_train, epochs=10, batch_size=32)
     return model
 
-def predict_sentiment(model, texts):
-    vectorizer = CountVectorizer()
+def predict_sentiment(model, texts, vectorizer):
     X = vectorizer.transform(texts)
-    y_pred = model.predict_classes(X)
-    return y_pred
+    y_pred_probs = model.predict(X)
+    y_pred_classes = np.argmax(y_pred_probs, axis=1)
+    return y_pred_classes
 
 def main():
     texts, labels = load_data()
-    X, y = preprocess(texts, labels)
+    X, y, vectorizer = preprocess(texts, labels)
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
@@ -67,7 +67,7 @@ def main():
         "The worst experience ever."
     ]
 
-    y_pred = predict_sentiment(model, test_texts)
+    y_pred = predict_sentiment(model, test_texts, vectorizer)
     sentiment_labels = ["negative", "positive"]
     predicted_sentiments = [sentiment_labels[p] for p in y_pred]
 
