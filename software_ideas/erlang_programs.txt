@@ -163,3 +163,44 @@ Erlang's features, such as fault tolerance, scalability, and real-time capabilit
 10. **Healthcare Analytics and Decision Support**: Erlang's real-time data processing and fault tolerance can be leveraged to develop healthcare analytics and decision support systems, helping healthcare professionals gain insights from vast amounts of patient data.
 
 Overall, Erlang's features, including its fault-tolerance, concurrency model, and real-time capabilities, make it a suitable choice for building robust and reliable health care applications. Its ability to handle concurrent connections and ensure data integrity can significantly contribute to enhancing patient care, medical communication, and overall efficiency in the health care industry.
+
+To implement a depth-first search (DFS) algorithm in Erlang, we can use a recursive approach. DFS is a graph traversal algorithm that explores as far as possible along each branch before backtracking. We can represent the graph as an adjacency list, where each node is associated with its adjacent nodes. Here's a simple implementation of the depth-first search algorithm in Erlang:
+
+```erlang
+-module(depth_first_search).
+-export([dfs/2]).
+
+% Depth-first search function
+dfs(Graph, StartNode) ->
+    dfs(Graph, [StartNode], []).
+
+% Helper function for DFS
+dfs(_, [], Acc) -> lists:reverse(Acc);
+dfs(Graph, [Node | Rest], Acc) ->
+    case lists:member(Node, Acc) of
+        true -> dfs(Graph, Rest, Acc);
+        false ->
+            AdjacentNodes = lists:filter(fun(N) -> not lists:member(N, Acc) end, maps:get(Node, Graph, [])),
+            NewStack = Rest ++ AdjacentNodes,
+            dfs(Graph, NewStack, [Node | Acc])
+    end.
+```
+
+In this implementation, the `dfs/2` function takes a graph represented as an adjacency list and the starting node for the search. The DFS algorithm is performed using a stack to keep track of the nodes to be visited.
+
+The function starts with an empty accumulator (`Acc`) and an initial stack containing the starting node (`StartNode`). It then recursively explores the graph using the stack until the stack becomes empty, indicating that all nodes have been visited.
+
+The `dfs/2` function calls a helper function, `dfs/3`, where the actual depth-first search is performed. In each iteration, the top node from the stack (`Node`) is extracted, and its adjacent nodes are retrieved from the adjacency list using `maps:get/3`. The `lists:filter/2` function is used to remove any nodes that are already in the accumulator, as we don't want to revisit nodes that have already been visited.
+
+The remaining adjacent nodes are then added to the stack, and the current node is appended to the accumulator. The function continues to explore the graph by recursively calling `dfs/3` with the updated stack and accumulator until all nodes are visited. When the stack becomes empty, the search is complete, and the result is returned in reverse order to obtain the correct DFS traversal path.
+
+To use this module, you can create an adjacency list representing your graph and call the `dfs/2` function with the graph and the starting node. For example:
+
+```erlang
+Graph = #{1 => [2, 3], 2 => [4], 3 => [5], 4 => [6], 5 => [6], 6 => []},
+StartNode = 1,
+Result = depth_first_search:dfs(Graph, StartNode),
+io:format("DFS Result: ~p~n", [Result]).
+```
+
+This will output the DFS traversal path starting from node 1. Note that the adjacency list should be represented as an Erlang map (`#{}`) where the keys are node identifiers, and the values are lists of adjacent nodes.
