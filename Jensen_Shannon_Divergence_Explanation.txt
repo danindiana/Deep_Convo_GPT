@@ -1,0 +1,42 @@
+Certainly! The Jensen-Shannon Divergence (JSD) is a method of measuring the similarity between two probability distributions. It is based on the Kullback-Leibler Divergence (KLD) but is symmetrical, which means \(JSD(P||Q) = JSD(Q||P)\). 
+
+The Jensen-Shannon Divergence between two distributions \(P\) and \(Q\) is defined as:
+
+\[JSD(P||Q) = \frac{1}{2} KLD(P||M) + \frac{1}{2} KLD(Q||M)\]
+
+where \(M = \frac{1}{2} (P + Q)\) is the average of the two distributions.
+
+The Kullback-Leibler Divergence between \(P\) and \(Q\) is defined as:
+
+\[KLD(P||Q) = \sum_{i} P(i) \log \frac{P(i)}{Q(i)}\]
+
+Here's how to compute the Jensen-Shannon Divergence using Python pseudo code:
+
+```python
+def kl_divergence(P, Q):
+    """
+    Compute Kullback-Leibler Divergence between two distributions P and Q.
+    """
+    return sum(p * log(p/q) for p, q in zip(P, Q) if p != 0 and q != 0)
+
+def jensen_shannon_divergence(P, Q):
+    """
+    Compute Jensen-Shannon Divergence between two distributions P and Q.
+    """
+    # Compute M - the average of the two distributions
+    M = [(p + q) / 2 for p, q in zip(P, Q)]
+    
+    return 0.5 * kl_divergence(P, M) + 0.5 * kl_divergence(Q, M)
+
+# Example
+P = [0.5, 0.5]
+Q = [0.9, 0.1]
+
+print(jensen_shannon_divergence(P, Q))
+```
+
+Please note the following:
+
+1. This pseudo code assumes that both \(P\) and \(Q\) are discrete probability distributions defined over the same set of events. 
+2. The distributions should be normalized, i.e., they should sum up to 1.
+3. The code uses the natural logarithm (`log`). Depending on the context, you might want to use the base 2 logarithm (`log2`) which would give the result in bits.
