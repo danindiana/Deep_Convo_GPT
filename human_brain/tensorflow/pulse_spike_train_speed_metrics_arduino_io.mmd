@@ -1,0 +1,53 @@
+graph TD
+    A[Pulse Spike Train Speed Metrics]
+
+    subgraph Arduino_Uno_328p
+        A --> B[Common Metrics IO]
+        A --> C[Choosing the Right Metric IO]
+        A --> D[Biological Algorithms IO]
+
+        subgraph Common Metrics IO Board
+            direction TB
+            B --> B1[Firing Rate IO Board]
+            B1 --> B1A[Mean Firing Rate Calculation IO]
+            B1 --> B1B[Instantaneous Firing Rate Calculation IO]
+
+            B --> B2[Interspike Interval IO Board]
+            B --> B3[Burst Metrics IO Board]
+            B --> B4[Synchrony Metrics IO Board]
+            B --> B5[Spike Train Metrics IO Board]
+
+            B1A --> Step1A[Collect spike data (Digital Input)]
+            B1A --> Step1B[Count total spikes (Digital Input)]
+            B1A --> Step1C[Divide spike count by time period (Analog Input)]
+
+            B1B --> Step2A[Define smoothing window (Analog Input)]
+            B1B --> Step2B[Slide window across data (Digital Output)]
+            B1B --> Step2C[Count spikes in window (Digital Input)]
+            B1B --> Step2D[Normalize by window size (Analog Output)]
+        end
+
+        subgraph Choosing the Right Metric IO Board
+            direction TB
+            C --> C1[Interest in Overall Firing Rate IO]
+            C1 --> C1A[Mean Firing Rate (Digital Input)]
+
+            C --> C2[Interest in Temporal Patterns and Variability IO]
+            C2 --> C2A[ISICV (Analog Input)]
+            C2 --> C2B[Burst Metrics (Digital Input)]
+        end
+
+        subgraph Biological Algorithms IO Board
+            direction TB
+            D --> D1[Mean Firing Rate Calculation IO]
+            D1 --> Step1A
+            D1 --> Step1B
+            D1 --> Step1C
+
+            D --> D2[Instantaneous Firing Rate Calculation IO]
+            D2 --> Step2A
+            D2 --> Step2B
+            D2 --> Step2C
+            D2 --> Step2D
+        end
+    end
