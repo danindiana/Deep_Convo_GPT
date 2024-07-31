@@ -1,3 +1,4 @@
+```mermaid
 graph TD
     A[Pulse Spike Train Speed Metrics]
 
@@ -17,24 +18,24 @@ graph TD
             B --> B4[Synchrony Metrics IO Board]
             B --> B5[Spike Train Metrics IO Board]
 
-            B1A --> Step1A[Collect spike data (Digital Input)]
-            B1A --> Step1B[Count total spikes (Digital Input)]
-            B1A --> Step1C[Divide spike count by time period (Analog Input)]
+            B1A --> Step1A[Collect spike data Digital Input]
+            B1A --> Step1B[Count total spikes Digital Input]
+            B1A --> Step1C[Divide spike count by time period Analog Input]
 
-            B1B --> Step2A[Define smoothing window (Analog Input)]
-            B1B --> Step2B[Slide window across data (Digital Output)]
-            B1B --> Step2C[Count spikes in window (Digital Input)]
-            B1B --> Step2D[Normalize by window size (Analog Output)]
+            B1B --> Step2A[Define smoothing window Analog Input]
+            B1B --> Step2B[Slide window across data Digital Output]
+            B1B --> Step2C[Count spikes in window Digital Input]
+            B1B --> Step2D[Normalize by window size Analog Output]
         end
 
         subgraph Choosing the Right Metric IO Board
             direction TB
             C --> C1[Interest in Overall Firing Rate IO]
-            C1 --> C1A[Mean Firing Rate (Digital Input)]
+            C1 --> C1A[Mean Firing Rate Digital Input]
 
             C --> C2[Interest in Temporal Patterns and Variability IO]
-            C2 --> C2A[ISICV (Analog Input)]
-            C2 --> C2B[Burst Metrics (Digital Input)]
+            C2 --> C2A[ISICV Analog Input]
+            C2 --> C2B[Burst Metrics Digital Input]
         end
 
         subgraph Biological Algorithms IO Board
@@ -51,3 +52,4 @@ graph TD
             D2 --> Step2D
         end
     end
+```
