@@ -1,0 +1,25 @@
+PulseSpikeTrainSpeedMetrics:
+  CommonMetrics:
+    FiringRate:
+      - MeanFiringRate
+      - InstantaneousFiringRate
+    InterspikeInterval:
+      - MeanISI
+      - CoefficientOfVariationISI
+    BurstMetrics:
+      - BurstRate
+      - BurstDuration
+      - IntraburstFrequency
+    SynchronyMetrics:
+      - SpikeTimeTilingCoefficientSTTC
+      - CrossCorrelation
+    SpikeTrainMetrics:
+      - VictorPurpuraDistance
+      - VanRossumDistance
+      - ModulusMetric
+      - MaxMetric
+  ChoosingTheRightMetric:
+    InterestInOverallFiringRate: MeanFiringRate
+    InterestInTemporalPatternsAndVariability:
+      - ISICV
+      - BurstMetrics
