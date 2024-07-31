@@ -1,0 +1,48 @@
+graph TD
+    A[Pulse Spike Train Speed Metrics]
+    
+    A --> B[Common Metrics]
+    A --> C[Choosing the Right Metric]
+    A --> D[Biological Algorithms]
+
+    subgraph Common Metrics
+        B --> B1[Firing Rate]
+        B1 --> B1A[Mean Firing Rate Calculation]
+        B1 --> B1B[Instantaneous Firing Rate Calculation]
+
+        B --> B2[Interspike Interval]
+        B --> B3[Burst Metrics]
+        B --> B4[Synchrony Metrics]
+        B --> B5[Spike Train Metrics]
+
+        B1A --> Step1A[Collect spike data over a defined period]
+        B1A --> Step1B[Count the total number of spikes]
+        B1A --> Step1C[Divide the total spike count by the time period]
+
+        B1B --> Step2A[Define a smoothing window or kernel]
+        B1B --> Step2B[Slide the window across the spike data]
+        B1B --> Step2C[Count spikes within each window]
+        B1B --> Step2D[Normalize by the window size]
+    end
+
+    subgraph Choosing the Right Metric
+        C --> C1[Interest in Overall Firing Rate]
+        C1 --> C1A[Mean Firing Rate]
+
+        C --> C2[Interest in Temporal Patterns and Variability]
+        C2 --> C2A[ISICV]
+        C2 --> C2B[Burst Metrics]
+    end
+
+    subgraph Biological Algorithms
+        D --> D1[Mean Firing Rate Calculation]
+        D1 --> Step1A
+        D1 --> Step1B
+        D1 --> Step1C
+
+        D --> D2[Instantaneous Firing Rate Calculation]
+        D2 --> Step2A
+        D2 --> Step2B
+        D2 --> Step2C
+        D2 --> Step2D
+    end
