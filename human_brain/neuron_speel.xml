@@ -1,0 +1,140 @@
+<PulseSpikeTrainSpeedMetrics>
+  <CommonMetrics>
+    <FiringRate>
+      <MeanFiringRate/>
+      <InstantaneousFiringRate/>
+    </FiringRate>
+    <InterspikeInterval>
+      <MeanISI/>
+      <CoefficientOfVariationISI/>
+    </InterspikeInterval>
+    <BurstMetrics>
+      <BurstRate/>
+      <BurstDuration/>
+      <IntraburstFrequency/>
+    </BurstMetrics>
+    <SynchronyMetrics>
+      <SpikeTimeTilingCoefficientSTTC/>
+      <CrossCorrelation/>
+    </SynchronyMetrics>
+    <SpikeTrainMetrics>
+      <VictorPurpuraDistance/>
+      <VanRossumDistance/>
+      <ModulusMetric/>
+      <MaxMetric/>
+    </SpikeTrainMetrics>
+  </CommonMetrics>
+  <ChoosingTheRightMetric>
+    <InterestInOverallFiringRate>MeanFiringRate</InterestInOverallFiringRate>
+    <InterestInTemporalPatternsAndVariability>
+      <ISICV/>
+      <BurstMetrics/>
+    </InterestInTemporalPatternsAndVariability>
+  </ChoosingTheRightMetric>
+  <BiologicalAlgorithms>
+    <Algorithm name="MeanFiringRateCalculation">
+      <Description>Calculates the average number of spikes per unit time</Description>
+      <Steps>
+        <Step>Collect spike data over a defined period</Step>
+        <Step>Count the total number of spikes</Step>
+        <Step>Divide the total spike count by the time period</Step>
+      </Steps>
+    </Algorithm>
+    <Algorithm name="InstantaneousFiringRateCalculation">
+      <Description>Estimates the firing rate at a specific moment using a smoothing window</Description>
+      <Steps>
+        <Step>Define a smoothing window or kernel</Step>
+        <Step>Slide the window across the spike data</Step>
+        <Step>Count spikes within each window</Step>
+        <Step>Normalize by the window size</Step>
+      </Steps>
+    </Algorithm>
+    <Algorithm name="MeanISICalculation">
+      <Description>Calculates the average time between successive spikes</Description>
+      <Steps>
+        <Step>Measure time intervals between consecutive spikes</Step>
+        <Step>Sum all intervals</Step>
+        <Step>Divide by the number of intervals</Step>
+      </Steps>
+    </Algorithm>
+    <Algorithm name="CoefficientOfVariationISICalculation">
+      <Description>Measures the variability of interspike intervals</Description>
+      <Steps>
+        <Step>Calculate the mean ISI</Step>
+        <Step>Calculate the standard deviation of ISIs</Step>
+        <Step>Divide the standard deviation by the mean ISI</Step>
+      </Steps>
+    </Algorithm>
+    <Algorithm name="BurstRateCalculation">
+      <Description>Calculates the number of bursts per unit time</Description>
+      <Steps>
+        <Step>Identify burst events in the spike data</Step>
+        <Step>Count the number of bursts</Step>
+        <Step>Divide by the time period</Step>
+      </Steps>
+    </Algorithm>
+    <Algorithm name="BurstDurationCalculation">
+      <Description>Measures the length of time a burst lasts</Description>
+      <Steps>
+        <Step>Identify the start and end of each burst</Step>
+        <Step>Calculate the duration for each burst</Step>
+        <Step>Average the durations if needed</Step>
+      </Steps>
+    </Algorithm>
+    <Algorithm name="IntraburstFrequencyCalculation">
+      <Description>Calculates the average firing rate within a burst</Description>
+      <Steps>
+        <Step>Identify spikes within each burst</Step>
+        <Step>Count the spikes within the burst</Step>
+        <Step>Divide by the burst duration</Step>
+      </Steps>
+    </Algorithm>
+    <Algorithm name="SpikeTimeTilingCoefficientCalculation">
+      <Description>Measures the degree of synchrony between two spike trains</Description>
+      <Steps>
+        <Step>Pair spikes from two spike trains</Step>
+        <Step>Calculate the proportion of coincident spikes</Step>
+        <Step>Adjust for the number of spikes in each train</Step>
+      </Steps>
+    </Algorithm>
+    <Algorithm name="CrossCorrelationCalculation">
+      <Description>Assesses the temporal relationship between two spike trains</Description>
+      <Steps>
+        <Step>Shift one spike train relative to the other</Step>
+        <Step>Count the coincident spikes at each shift</Step>
+        <Step>Plot the counts against the shifts</Step>
+      </Steps>
+    </Algorithm>
+    <Algorithm name="VictorPurpuraDistanceCalculation">
+      <Description>Measures the dissimilarity between two spike trains</Description>
+      <Steps>
+        <Step>Define a cost for adding, deleting, and moving spikes</Step>
+        <Step>Align spikes from the two trains using the defined costs</Step>
+        <Step>Calculate the total alignment cost</Step>
+      </Steps>
+    </Algorithm>
+    <Algorithm name="VanRossumDistanceCalculation">
+      <Description>Compares spike trains using a parameter-dependent metric</Description>
+      <Steps>
+        <Step>Convolve each spike train with an exponential kernel</Step>
+        <Step>Calculate the difference between the convolved signals</Step>
+        <Step>Integrate the squared difference over time</Step>
+      </Steps>
+    </Algorithm>
+    <Algorithm name="ModulusMetricCalculation">
+      <Description>Measures distances between spike trains with bursts</Description>
+      <Steps>
+        <Step>Identify burst events in each spike train</Step>
+        <Step>Calculate the distance between corresponding bursts</Step>
+        <Step>Sum the distances for all bursts</Step>
+      </Steps>
+    </Algorithm>
+    <Algorithm name="MaxMetricCalculation">
+      <Description>Measures distances between spike trains with bursts</Description>
+      <Steps>
+        <Step>Identify burst events in each spike train</Step>
+        <Step>Find the maximum distance between any pair of bursts</Step>
+      </Steps>
+    </Algorithm>
+  </BiologicalAlgorithms>
+</PulseSpikeTrainSpeedMetrics>
