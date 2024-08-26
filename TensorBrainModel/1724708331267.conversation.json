@@ -1,0 +1,251 @@
+{
+  "name": "BrainModel for TensorFlow",
+  "systemPrompt": "",
+  "messages": [
+    {
+      "versions": [
+        {
+          "type": "singleStep",
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "import tensorflow as tf\nfrom tensorflow.keras import Sequential\nfrom tensorflow.keras.layers import Dense\n\nclass BrainModel:\n    def __init__(self):\n        # Initialize a Sequential model\n        self.model = Sequential()\n\n        # Add multiple layers to simulate brain complexity\n        # We start with an input layer (with input shape 32, can be adjusted depending on the actual input dimensionality)\n        self.model.add(Dense(32, activation='relu', input_shape=(32,)))\n\n        # Add multiple hidden layers to represent brain's intricate structure\n        self.model.add(Dense(64, activation='relu'))\n        self.model.add(Dense(128, activation='relu'))\n        self.model.add(Dense(64, activation='relu'))\n\n        # Output layer (output dimensionality should be adjusted according to the problem's nature)\n        self.model.add(Dense(10, activation='softmax')) \n\n        # Compile the model\n        self.model.compile(optimizer='adam',\n                           loss='sparse_categorical_crossentropy',\n                           metrics=['accuracy'])\n\n    def encode(self, sensory_input, labels):\n        # Training the model represents encoding sensory input into the brain\n        # Here, sensory_input is the training data and labels are the correct outputs\n        self.model.fit(sensory_input, labels, epochs=10)  # epochs is a parameter that can be tuned\n\n    def retrieve(self, cue):\n        # Predicting using the model represents retrieving information from the brain\n        return self.model.predict(cue)"
+            }
+          ],
+          "processed": [
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "import tensorflow as tf\nfrom tensorflow.keras import Sequential\nfrom tensorflow.keras.layers import Dense\n\nclass BrainModel:\n    def __init__(self):\n        # Initialize a Sequential model\n        self.model = Sequential()\n\n        # Add multiple layers to simulate brain complexity\n        # We start with an input layer (with input shape 32, can be adjusted depending on the actual input dimensionality)\n        self.model.add(Dense(32, activation='relu', input_shape=(32,)))\n\n        # Add multiple hidden layers to represent brain's intricate structure\n        self.model.add(Dense(64, activation='relu'))\n        self.model.add(Dense(128, activation='relu'))\n        self.model.add(Dense(64, activation='relu'))\n\n        # Output layer (output dimensionality should be adjusted according to the problem's nature)\n        self.model.add(Dense(10, activation='softmax')) \n\n        # Compile the model\n        self.model.compile(optimizer='adam',\n                           loss='sparse_categorical_crossentropy',\n                           metrics=['accuracy'])\n\n    def encode(self, sensory_input, labels):\n        # Training the model represents encoding sensory input into the brain\n        # Here, sensory_input is the training data and labels are the correct outputs\n        self.model.fit(sensory_input, labels, epochs=10)  # epochs is a parameter that can be tuned\n\n    def retrieve(self, cue):\n        # Predicting using the model represents retrieving information from the brain\n        return self.model.predict(cue)"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "currentlySelected": 0
+    },
+    {
+      "versions": [
+        {
+          "type": "multiStep",
+          "role": "assistant",
+          "steps": [
+            {
+              "type": "debugInfoBlock",
+              "stepIdentifier": "1724708377820-0.9320612074038883",
+              "debugInfo": "Retrieval unavailable"
+            },
+            {
+              "type": "debugInfoBlock",
+              "stepIdentifier": "1724708377820-0.8969089691868803",
+              "debugInfo": "Processed content import tensorflow as tf\nfrom tensorflow.keras import Sequential\nfrom tensorflow.keras.layers import Dense\n\nclass BrainModel:\n    def __init__(self):\n        # Initialize a Sequential model\n        self.model = Sequential()\n\n        # Add multiple layers to simulate brain complexity\n        # We start with an input layer (with input shape 32, can be adjusted depending on the actual input dimensionality)\n        self.model.add(Dense(32, activation='relu', input_shape=(32,)))\n\n        # Add multiple hidden layers to represent brain's intricate structure\n        self.model.add(Dense(64, activation='relu'))\n        self.model.add(Dense(128, activation='relu'))\n        self.model.add(Dense(64, activation='relu'))\n\n        # Output layer (output dimensionality should be adjusted according to the problem's nature)\n        self.model.add(Dense(10, activation='softmax')) \n\n        # Compile the model\n        self.model.compile(optimizer='adam',\n                           loss='sparse_categorical_crossentropy',\n                           metrics=['accuracy'])\n\n    def encode(self, sensory_input, labels):\n        # Training the model represents encoding sensory input into the brain\n        # Here, sensory_input is the training data and labels are the correct outputs\n        self.model.fit(sensory_input, labels, epochs=10)  # epochs is a parameter that can be tuned\n\n    def retrieve(self, cue):\n        # Predicting using the model represents retrieving information from the brain\n        return self.model.predict(cue)"
+            },
+            {
+              "type": "contentBlock",
+              "stepIdentifier": "1724708377820-0.11580229860099767",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Great! Here's an example of how to use this code in a Python script:\n\n```python\n# Create a BrainModel instance\nbrain_model = BrainModel()\n\n# Generate (or replace with your own) training data and labels\ntraining_data, labels = generate_training_data_and_labels(100, 32, 10)\n\n# Encode the training data to train (encode in the brain)\nbrain_model.encode(training_data, labels)\n\n# Create (or replace with your own) a cue for retrieval\ncue = generate_cue()\n\n# Retrieve (remember) from the encoded data\nretrieved_data = brain_model.retrieve(cue)\n```\n\nRemember that you will need to implement or find functions for `generate_training_data_and_labels()`,  `generate_cue()` and `predict()` in your code. The `generate_training_data_and_labels()` is for creating (or using) a dataset with 100 32-dimensional data points, each with 10 possible labels. The `generate_cue()`  is for creating (or using) a 32-dimensional cue to retrieve from the encoded data. The `predict()`  should be used in the `retrieve()`  and it's for predicting (remembering) the output of 32-dimensional cue.\n\nAlso, you will need to adjust the number of epochs as per your training needs. More epochs may lead to a more accurate model, but at the cost of longer computation time. \n\nPlease let me know if I can assist with anything else!"
+                }
+              ],
+              "genInfo": {
+                "indexedModelIdentifier": "mradermacher/Qwen2-7B-FocusMix-GGUF/Qwen2-7B-FocusMix.IQ3_M.gguf",
+                "identifier": "qwen2-7b-focusmix.iq3_m",
+                "loadModelConfig": {
+                  "fields": [
+                    {
+                      "key": "llm.load.contextLength",
+                      "value": 31501
+                    },
+                    {
+                      "key": "llm.load.llama.acceleration.offloadRatio",
+                      "value": 1
+                    }
+                  ]
+                },
+                "predictionConfig": {
+                  "fields": [
+                    {
+                      "key": "llm.prediction.promptTemplate",
+                      "value": {
+                        "type": "jinja",
+                        "jinjaPromptTemplate": {
+                          "template": "{% for message in messages %}{% if loop.first and messages[0]['role'] != 'system' %}{{ '<|im_start|>system\nYou are a helpful assistant<|im_end|>\n' }}{% endif %}{{'<|im_start|>' + message['role'] + '\n' + message['content'] + '<|im_end|>' + '\n'}}{% endfor %}{% if add_generation_prompt %}{{ '<|im_start|>assistant\n' }}{% endif %}",
+                          "bosToken": "<|endoftext|>",
+                          "eosToken": "<|endoftext|>"
+                        },
+                        "stopStrings": []
+                      }
+                    },
+                    {
+                      "key": "llm.prediction.llama.cpuThreads",
+                      "value": 12
+                    },
+                    {
+                      "key": "llm.prediction.contextOverflowPolicy",
+                      "value": "rollingWindow"
+                    },
+                    {
+                      "key": "llm.prediction.temperature",
+                      "value": 0.5
+                    }
+                  ]
+                },
+                "stats": {
+                  "stopReason": "eosFound",
+                  "tokensPerSecond": 30.709271975682977,
+                  "numGpuLayers": -1,
+                  "timeToFirstTokenSec": 0.549,
+                  "promptTokensCount": 324,
+                  "predictedTokensCount": 312,
+                  "totalTokensCount": 636
+                }
+              },
+              "defaultShouldIncludeInContext": true,
+              "shouldIncludeInContext": true
+            }
+          ]
+        }
+      ],
+      "currentlySelected": 0
+    },
+    {
+      "versions": [
+        {
+          "type": "singleStep",
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Implement or find functions for generate_training_data_and_labels(),  generate_cue() and predict() in your code. The generate_training_data_and_labels() is for creating (or using) a dataset with 100 32-dimensional data points, each with 10 possible labels. The generate_cue()  is for creating (or using) a 32-dimensional cue to retrieve from the encoded data. The predict()  should be used in the retrieve()  and it's for predicting (remembering) the output of 32-dimensional cue."
+            }
+          ],
+          "processed": [
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Implement or find functions for generate_training_data_and_labels(),  generate_cue() and predict() in your code. The generate_training_data_and_labels() is for creating (or using) a dataset with 100 32-dimensional data points, each with 10 possible labels. The generate_cue()  is for creating (or using) a 32-dimensional cue to retrieve from the encoded data. The predict()  should be used in the retrieve()  and it's for predicting (remembering) the output of 32-dimensional cue."
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "currentlySelected": 0
+    },
+    {
+      "versions": [
+        {
+          "type": "multiStep",
+          "role": "assistant",
+          "steps": [
+            {
+              "type": "debugInfoBlock",
+              "stepIdentifier": "1724708439392-0.91287105501461",
+              "debugInfo": "Retrieval unavailable"
+            },
+            {
+              "type": "debugInfoBlock",
+              "stepIdentifier": "1724708439392-0.38383128893415086",
+              "debugInfo": "Processed content Implement or find functions for generate_training_data_and_labels(),  generate_cue() and predict() in your code. The generate_training_data_and_labels() is for creating (or using) a dataset with 100 32-dimensional data points, each with 10 possible labels. The generate_cue()  is for creating (or using) a 32-dimensional cue to retrieve from the encoded data. The predict()  should be used in the retrieve()  and it's for predicting (remembering) the output of 32-dimensional cue."
+            },
+            {
+              "type": "contentBlock",
+              "stepIdentifier": "1724708439392-0.6684392843994618",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Sure, I can help you with that.\n\nWe'll use numpy and tensorflow here:\n\n```python\n\nimport numpy as np \nfrom sklearn.model_selection import train_test_split \n\ndef generate_training_data_and_labels(num_samples=100):\n    \"\"\"\n    Generate random training data of shape (num_samples, 32) each labeled from a categorical distribution\n    with num_classes possible classes.\n    \"\"\"\n    \n    # Generate random samples for input features. Each sample is an array of length 32 representing some kind \n    # of sensory information or feature vector that could be measured by the brain model.\n    features = np.random.rand(num_samples, 32)\n  \n    # Generate labels (targets). These are integers from [0, num_classes -1]. Here we use one-hot encoding\n    num_classes = 10  # Adjust this according to your problem's nature. For instance if you have a binary classification \n                        # task then set it as `2`.\n    \n    labels = np.random.randint(0, num_classes, size=(num_samples,))\n        \n    return features, labels\n\ndef generate_cue():\n    \"\"\"\n    Generate random cue of shape (1, 32) for retrieval. This is used to retrieve information from the brain model.\n    \"\"\"\n  \n    # Generate a single sample as a feature vector\n    cue = np.random.rand(1, 32)\n    \n    return cue\n\n```\n\nThe `predict()` function can be implemented using:\n\n```python\ndef predict(model, cue):\n  \"\"\"\n  Predict (remember) output of the model for given 32-dimensional cue.\n  \n  Arguments:\n      model: Trained Keras sequential model to make predictions on cues. \n      cue: Input feature vector or array-like object representing a single sample.\n\n  Returns predicted probabilities distribution over classes as an array with shape (num_classes,)\n  \"\"\"\n    \n  # Make prediction for the given input\n  prediction = model.predict(cue)\n  \n  return prediction\n\n```\n\nPlease note that these functions are simple examples and they may need to be adjusted according to your specific problem's nature. For instance, if you have a binary classification task then set `num_classes` as 2 in generate_training_data_and_labels() function.\n\nAlso please ensure the model is trained on this data before using it for prediction (in predict())."
+                }
+              ],
+              "defaultShouldIncludeInContext": true,
+              "shouldIncludeInContext": true,
+              "genInfo": {
+                "indexedModelIdentifier": "arcee-ai/Arcee-Scribe-GGUF/Arcee-Scribe-Q8_0.gguf",
+                "identifier": "arcee-scribe-q8_0",
+                "loadModelConfig": {
+                  "fields": [
+                    {
+                      "key": "llm.load.contextLength",
+                      "value": 8192
+                    },
+                    {
+                      "key": "llm.load.llama.acceleration.offloadRatio",
+                      "value": 1
+                    }
+                  ]
+                },
+                "predictionConfig": {
+                  "fields": [
+                    {
+                      "key": "llm.prediction.promptTemplate",
+                      "value": {
+                        "type": "jinja",
+                        "jinjaPromptTemplate": {
+                          "template": "{{ bos_token }}{% for message in messages %}{{'<|im_start|>' + message['role'] + '\n' + message['content'] + '<|im_end|>' + '\n'}}{% endfor %}{% if add_generation_prompt %}{{ '<|im_start|>assistant\n' }}{% endif %}",
+                          "bosToken": "<s>",
+                          "eosToken": "<|im_end|>"
+                        },
+                        "stopStrings": []
+                      }
+                    },
+                    {
+                      "key": "llm.prediction.llama.cpuThreads",
+                      "value": 12
+                    },
+                    {
+                      "key": "llm.prediction.contextOverflowPolicy",
+                      "value": "rollingWindow"
+                    },
+                    {
+                      "key": "llm.prediction.temperature",
+                      "value": 0.5
+                    }
+                  ]
+                },
+                "stats": {
+                  "stopReason": "eosFound",
+                  "tokensPerSecond": 22.260041235783167,
+                  "numGpuLayers": -1,
+                  "timeToFirstTokenSec": 0.927,
+                  "promptTokensCount": 744,
+                  "predictedTokensCount": 472,
+                  "totalTokensCount": 1216
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "currentlySelected": 0
+    }
+  ],
+  "usePerChatPredictionConfig": true,
+  "perChatPredictionConfig": {
+    "fields": []
+  },
+  "tokenCount": 1261,
+  "createdAt": 1724708331267,
+  "pinned": false,
+  "clientInput": "",
+  "clientInputFiles": [],
+  "userFilesSizeBytes": 0,
+  "lastUsedModel": {
+    "indexedModelIdentifier": "arcee-ai/Arcee-Scribe-GGUF/Arcee-Scribe-Q8_0.gguf",
+    "identifier": "arcee-scribe-q8_0",
+    "instanceLoadTimeConfig": {
+      "fields": []
+    },
+    "instanceOperationTimeConfig": {
+      "fields": []
+    }
+  },
+  "notes": []
+}
