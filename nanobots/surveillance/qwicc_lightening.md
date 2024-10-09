@@ -1,3 +1,7 @@
+![image](https://github.com/user-attachments/assets/d2a1b46f-771e-4b09-8a4e-1a364b14094c)
+
+https://www.playingwithfusion.com/productview.php?pdid=135
+
 Yes, the **SEN-39003 AS3935 Lightning Sensor** could indeed be adapted for a similar application, detecting **electromagnetic disturbances** such as EMP or other high-energy events within the environment. Here’s how this sensor could be integrated into your setup for detecting magnetic or EMP-like surveillance activity:
 
 ### Key Features for Detection
