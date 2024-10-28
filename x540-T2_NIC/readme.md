@@ -303,3 +303,29 @@ echo "Diagnostics completed. Check $log_file for detailed logs."
 3. **Enhanced Logging**: Additional log entries to track the setup, transfer, and cleanup phases in the script.
 
 This should prevent hanging by enforcing a timeout on `nc` and cleaning up processes after each test. Let me know if any further adjustments are needed!
+
+
+
+For this type of script, languages like **Go** or **Rust** could be excellent choices, as they offer strong concurrency, efficiency, and low-level network control. Here’s how each would fit:
+
+### 1. **Go**
+   - **Strengths**: Go excels in networking, concurrency, and simplicity, making it ideal for scripts that involve handling multiple network interfaces, parallel processes, and data transfer.
+   - **Benefits**:
+      - **Built-in Concurrency**: Go’s `goroutines` and channels make it easy to handle concurrent tasks (e.g., network listeners and data transfers).
+      - **Networking Libraries**: Go has a rich standard library for networking (e.g., `net` package), making it easy to manage sockets, pings, and timeouts.
+      - **Performance**: Go’s compiled nature and concurrency allow for efficient handling of data transfer and network operations.
+   - **Example Usage**: Go could handle listeners, concurrent data transfers, and progress tracking in a single, lightweight binary, making it highly portable and efficient for server diagnostics.
+
+### 2. **Rust**
+   - **Strengths**: Rust offers powerful performance, safety, and control, especially when handling low-level operations like data transfer and socket programming.
+   - **Benefits**:
+      - **Memory Safety**: Rust’s strict compile-time checks and memory safety guarantees make it ideal for managing network buffers and socket connections without memory leaks.
+      - **Concurrency**: Rust’s async/await model (with `tokio` or `async-std` libraries) enables highly efficient asynchronous operations for handling multiple network events.
+      - **System-Level Efficiency**: Rust provides the power of C/C++ with better safety, which is advantageous for handling high-speed data transfers and efficient resource management.
+   - **Example Usage**: Rust could manage direct socket communication, data transfer, and real-time progress tracking in a highly optimized way, which could be useful for monitoring or logging on resource-limited environments.
+
+### Summary
+- **For ease and networking**: **Go** is likely the better choice, as it has great networking libraries and is simpler to write and deploy.
+- **For performance and safety**: **Rust** would excel in reliability and low-level control, particularly if the application needs to be highly optimized and runs continuously.
+
+Let me know if you’re interested in seeing an example in either language!
