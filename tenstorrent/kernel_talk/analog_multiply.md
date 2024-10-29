@@ -106,3 +106,9 @@ print(Vout)
 - The example assumes simplified values for capacitors and input values. In a real implementation, these values would need to be carefully chosen based on the specific design requirements and constraints.
 
 This example provides a basic framework for modeling an analog multiplier in PyTorch, but it would need to be expanded and refined to fully capture the complexities described in the text.
+
+An SRAM-Based Multibit In-Memory
+Matrix-Vector Multiplier With a Precision That
+Scales Linearly in Area, Time, and Power
+Riduan Khaddam-Aljameh , Graduate Student Member, IEEE, Pier-Andrea Francese , Senior Member, IEEE,
+Luca Benini , Fellow, IEEE, and Evangelos Eleftheriou , Life Fellow, IEEE
