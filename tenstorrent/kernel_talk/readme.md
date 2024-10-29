@@ -172,3 +172,140 @@ In this example, the tensor sizes have been reduced to `(4, 256, 256)`, which sh
 ### Conclusion
 
 The error is due to the large memory requirements of the tensors in your PyTorch module. By reducing the tensor sizes, using a GPU, or processing data in smaller batches, you can mitigate this issue. Adjusting the tensor sizes as shown in the example above should help you avoid the memory allocation error.
+
+
+The logs indicate that the PyBuda installation was successful, and the compilation process proceeded without errors. The warning about "No valid grids found for node: reshape_2.dc.matmul.3 BudaOp::matmul" suggests that the balancer could not find a suitable grid configuration for a specific operation. This warning might be due to the complexity or specific requirements of the operation.
+
+### Understanding the Warning
+
+The warning message:
+```
+WARNING  | Balancer        - No valid grids found for node: reshape_2.dc.matmul.3 BudaOp::matmul [1, 1, 1024, 65536], buffer_alloc_cnt 72,  user_access_cnt 152 , operand_access_cnt 0, operand_and_user_access_cnt 0
+```
+indicates that the balancer could not find a valid grid configuration for the `matmul` operation with the given dimensions `[1, 1, 1024, 65536]`. This could be due to several reasons, such as:
+
+1. **Memory Constraints**: The dimensions might be too large for the available memory on the device.
+2. **Grid Configuration**: The balancer might not have found a suitable grid configuration that meets the requirements of the operation.
+3. **Optimization Issues**: The operation might require specific optimizations that are not currently supported or configured.
+
+### Handling the Warning
+
+While this warning does not necessarily indicate a failure, it is important to understand its implications. Here are a few steps you can take to address or mitigate the warning:
+
+1. **Check Tensor Dimensions**: Ensure that the tensor dimensions are appropriate for the available hardware resources. If necessary, reduce the dimensions to fit within the memory constraints.
+
+2. **Optimize Operations**: Consider optimizing the operations to reduce memory usage or improve performance. For example, you can use techniques like gradient checkpointing or memory-efficient operations.
+
+3. **Adjust Balancer Configuration**: If possible, adjust the balancer configuration or policy to better handle the specific operation.
+
+### Example with Adjusted Tensor Dimensions
+
+Here is an example where the tensor dimensions are adjusted to be more memory-efficient:
+
+```python
+import pybuda
+import torch
+
+# Sample PyTorch module with a convolutional layer and reduced tensor sizes
+class PyTorchTestModule(torch.nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.conv = torch.nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1)
+        self.relu = torch.nn.ReLU()
+        self.weights1 = torch.nn.Parameter(torch.rand(128, 128), requires_grad=True)
+        self.weights2 = torch.nn.Parameter(torch.rand(128, 128), requires_grad=True)
+    
+    def forward(self, act1, act2):
+        conv_output = self.conv(act1)
+        relu_output = self.relu(conv_output)
+        m1 = torch.matmul(relu_output, self.weights1)
+        m2 = torch.matmul(act2, self.weights2)
+        return m1 + m2, m1
+
+def test_module_direct_pytorch():
+    input1 = torch.rand(4, 1, 128, 128)  # Adjusted for Conv2d input
+    input2 = torch.rand(4, 128, 128)
+    # Run single inference pass on a PyTorch module, using a wrapper to convert to PyBuda first
+    output = pybuda.PyTorchModule("direct_pt", PyTorchTestModule()).run(input1, input2)
+    print(output)
+    print("PyBuda installation was a success!")
+
+if __name__ == "__main__":
+    test_module_direct_pytorch()
+```
+
+### Conclusion
+
+The warning about the balancer not finding a valid grid configuration for a specific operation is something to be aware of, but it does not necessarily indicate a failure. By adjusting the tensor dimensions and ensuring that the operations are optimized for the available hardware resources, you can mitigate such warnings and ensure smoother execution.
+
+Certainly! Below is a version of the code that includes activation functions as part of the `PyTorchTestModule`. This example will demonstrate how to use activation functions in PyTorch.
+
+### Activation Functions Version
+
+```python
+import pybuda
+import torch
+
+# Sample PyTorch module with activation functions
+class PyTorchTestModule(torch.nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.conv = torch.nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1)
+        self.relu = torch.nn.ReLU()
+        self.sigmoid = torch.nn.Sigmoid()
+        self.tanh = torch.nn.Tanh()
+        self.weights1 = torch.nn.Parameter(torch.rand(128, 128), requires_grad=True)
+        self.weights2 = torch.nn.Parameter(torch.rand(128, 128), requires_grad=True)
+    
+    def forward(self, act1, act2):
+        conv_output = self.conv(act1)
+        relu_output = self.relu(conv_output)
+        sigmoid_output = self.sigmoid(relu_output)
+        tanh_output = self.tanh(sigmoid_output)
+        m1 = torch.matmul(tanh_output, self.weights1)
+        m2 = torch.matmul(act2, self.weights2)
+        return m1 + m2, m1
+
+def test_module_direct_pytorch():
+    input1 = torch.rand(4, 1, 128, 128)  # Adjusted for Conv2d input
+    input2 = torch.rand(4, 128, 128)
+    # Run single inference pass on a PyTorch module, using a wrapper to convert to PyBuda first
+    output = pybuda.PyTorchModule("direct_pt", PyTorchTestModule()).run(input1, input2)
+    print(output)
+    print("PyBuda installation was a success!")
+
+if __name__ == "__main__":
+    test_module_direct_pytorch()
+```
+
+### Explanation
+
+1. **Convolutional Layer (`self.conv`)**:
+   - The `torch.nn.Conv2d` layer is added to the module. It takes an input tensor with 1 channel and applies a convolution with 32 output channels, using a 3x3 kernel with stride 1 and padding 1.
+
+2. **Activation Functions**:
+   - **ReLU (`self.relu`)**: Applies the Rectified Linear Unit (ReLU) activation function to the output of the convolutional layer.
+   - **Sigmoid (`self.sigmoid`)**: Applies the Sigmoid activation function to the output of the ReLU activation.
+   - **Tanh (`self.tanh`)**: Applies the Hyperbolic Tangent (Tanh) activation function to the output of the Sigmoid activation.
+
+3. **Forward Pass**:
+   - The `forward` method first applies the convolutional layer to `act1`, then applies the ReLU activation.
+   - The result of the ReLU activation is then passed through the Sigmoid activation.
+   - The result of the Sigmoid activation is then passed through the Tanh activation.
+   - The result of the Tanh activation is then used in a matrix multiplication with `self.weights1`.
+   - Another matrix multiplication is performed with `act2` and `self.weights2`.
+   - The final output is the sum of the two matrix multiplication results and the result of the first matrix multiplication.
+
+4. **Input Tensors**:
+   - The input tensor `input1` is adjusted to match the expected shape for a 2D convolution, which is `(batch_size, channels, height, width)`.
+   - The input tensor `input2` remains the same as in the original code.
+
+### Running the Code
+
+To run the code, save it to a file (e.g., `activation_smoker.py`) and execute it using Python:
+
+```bash
+python activation_smoker.py
+```
+
+This version of the code includes activation functions in the `PyTorchTestModule`, demonstrating how to use ReLU, Sigmoid, and Tanh activations in PyTorch within the context of your module.
