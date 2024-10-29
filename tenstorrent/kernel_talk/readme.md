@@ -309,3 +309,84 @@ python activation_smoker.py
 ```
 
 This version of the code includes activation functions in the `PyTorchTestModule`, demonstrating how to use ReLU, Sigmoid, and Tanh activations in PyTorch within the context of your module.
+
+
+The error message indicates that the backend compilation failed due to a constraint violation in the tensor stacking process. This is a specific issue related to the `pybuda` library and its backend, which seems to have constraints on how tensors are stacked and processed.
+
+### Understanding the Error
+
+The error message:
+```
+ERROR: TM ERROR (producer = stack_401.dc.concatenate.10.dc.concatenate.1, consumer = transpose_402.dc.sparse_matmul.4.lc2): TM order doesn't satisfy constraints for stacking with phased pipes, the number of buffered output mblocks on the producer (not counting double-buffering) must be a multiple of the total stack factor or producer t
+```
+suggests that the tensor stacking operation in the LSTM layer does not satisfy the constraints required by the `pybuda` backend.
+
+### Possible Solutions
+
+1. **Adjust LSTM Parameters**:
+   - Try adjusting the parameters of the LSTM layer (e.g., `hidden_size`, `num_layers`) to see if it resolves the constraint issue.
+
+2. **Simplify the Model**:
+   - Simplify the model by reducing the complexity of the LSTM layer or by removing some layers to see if the issue persists.
+
+3. **Check `pybuda` Documentation**:
+   - Refer to the `pybuda` documentation or contact the developers to understand the specific constraints and how to work around them.
+
+### Updated Code with Simplified LSTM
+
+Here's an updated version of the code with a simplified LSTM layer:
+
+```python
+import pybuda
+import torch
+
+# Sample PyTorch module with a simplified recurrent layer (LSTM)
+class PyTorchTestModule(torch.nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.lstm = torch.nn.LSTM(input_size=128, hidden_size=32, num_layers=1, batch_first=True)
+        self.fc = torch.nn.Linear(32, 128)
+        self.relu = torch.nn.ReLU()
+        self.weights1 = torch.nn.Parameter(torch.rand(128, 128), requires_grad=True)
+        self.weights2 = torch.nn.Parameter(torch.rand(128, 128), requires_grad=True)
+    
+    def forward(self, act1, act2):
+        lstm_output, _ = self.lstm(act1)
+        lstm_output = self.fc(lstm_output[:, -1, :])  # Use the last time step output
+        relu_output = self.relu(lstm_output)
+        m1 = torch.matmul(relu_output, self.weights1)
+        m2 = torch.matmul(act2, self.weights2)
+        return m1 + m2, m1
+
+def test_module_direct_pytorch():
+    input1 = torch.rand(4, 10, 128)  # Adjusted for LSTM input (batch_size, sequence_length, input_size)
+    input2 = torch.rand(4, 128, 128)
+    # Run single inference pass on a PyTorch module, using a wrapper to convert to PyBuda first
+    output = pybuda.PyTorchModule("direct_pt", PyTorchTestModule()).run(input1, input2)
+    print(output)
+    print("PyBuda installation was a success!")
+
+if __name__ == "__main__":
+    test_module_direct_pytorch()
+```
+
+### Explanation
+
+1. **Simplified LSTM Layer**:
+   - The LSTM layer now has a `hidden_size` of 32 and only 1 layer, which reduces the complexity and might help satisfy the constraints of the `pybuda` backend.
+
+2. **Fully Connected Layer (`self.fc`)**:
+   - The fully connected layer is adjusted to map the LSTM output to a 128-dimensional space.
+
+3. **ReLU Activation (`self.relu`)**:
+   - The ReLU activation function is applied to the output of the fully connected layer.
+
+### Running the Code
+
+To run the code, save it to a file (e.g., `simplified_recurrent_smoker.py`) and execute it using Python:
+
+```bash
+python simplified_recurrent_smoker.py
+```
+
+This version of the code includes a simplified LSTM layer in the `PyTorchTestModule`, which might help resolve the constraint issue and allow the compilation to succeed.
