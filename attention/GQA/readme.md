@@ -1,3 +1,11 @@
+From the paper: Beyond Uniform Query Distribution: Key-Driven Grouped Query Attention
+Zohaib Khan*, Muhammad Khaquan*, Omer Tafveez, Burhanuddin Samiwala, Agha Ali Raza
+Lahore University of Management Sciences
+{24100074, 25100095, 25020254, 25100255, agha.ali.raza}@lums.edu.pk
+
+arXiv:2408.08454v2 [cs.CV] 28 Aug 2024
+https://www.arxiv.org/pdf/2408.08454
+
 This paper introduces innovative extensions to the Grouped Query Attention (GQA) mechanism to enhance performance in memory-constrained self-attention applications. The main contributions include:
 
 1. **Key-Distributed GQA (KDGQA):** A method that allocates query heads dynamically to key-value groups based on the L2-norms of key vectors. This approach ensures that queries are distributed according to the relative importance of keys, improving accuracy while maintaining efficiency.
