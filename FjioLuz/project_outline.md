@@ -613,3 +613,185 @@ This stack provides a **nose-to-tail setup** for a **Virtual Help Desk/Customer 
 - **Deployment** with Nginx for production.
 
 Let me know if you’d like further details or assistance!
+
+If you're integrating **OpenWebUI** (an open-source frontend for serving AI models) into your **Virtual Help Desk/Customer Support Assistant stack**, the architecture changes slightly. Here's the updated stack:
+
+---
+
+### **Bare-Metal Ubuntu 22.04 Stack with OpenWebUI**
+
+---
+
+#### **1. Operating System**
+- **Ubuntu 22.04 LTS**: Still the base OS, stable for AI workloads and GPU support.
+
+---
+
+#### **2. NVIDIA Drivers and CUDA**
+1. **Install NVIDIA Drivers**:
+   ```bash
+   sudo apt update
+   sudo apt install nvidia-driver-535
+   sudo reboot
+   ```
+2. **Install CUDA Toolkit**:
+   ```bash
+   sudo apt install nvidia-cuda-toolkit
+   ```
+
+---
+
+#### **3. Python Environment**
+1. **Install Python 3.10**:
+   ```bash
+   sudo apt install python3.10 python3.10-venv python3.10-dev
+   ```
+2. **Create a Virtual Environment**:
+   ```bash
+   python3.10 -m venv venv
+   source venv/bin/activate
+   ```
+
+---
+
+#### **4. Install and Set Up OpenWebUI**
+1. **Clone the OpenWebUI Repository**:
+   ```bash
+   git clone https://github.com/OpenWebUI/OpenWebUI.git
+   cd OpenWebUI
+   ```
+
+2. **Install Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Start the OpenWebUI Server**:
+   ```bash
+   python app.py
+   ```
+   - OpenWebUI runs on a web-based interface, typically accessible at `http://127.0.0.1:5000` by default.
+
+---
+
+#### **5. AI Frameworks**
+1. **Install PyTorch with CUDA Support**:
+   ```bash
+   pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+   ```
+2. **Install Hugging Face Transformers**:
+   ```bash
+   pip install transformers
+   ```
+
+---
+
+#### **6. Integrate OpenWebUI with RAG (Retrieval-Augmented Generation)**
+
+**Add RAG Integration:**
+1. Extend OpenWebUI with a backend pipeline for RAG:
+   - Use **LangChain** or **Haystack** for document retrieval and embedding management.
+2. Set up the PostgreSQL vector database:
+   ```bash
+   sudo apt install postgresql postgresql-contrib
+   sudo -u postgres psql -c "CREATE DATABASE vector_db;"
+   sudo -u postgres psql -d vector_db -c "CREATE EXTENSION pgvector;"
+   ```
+
+3. Integrate OpenWebUI with RAG and your vector database:
+   ```python
+   from transformers import pipeline
+   from langchain import OpenAI, VectorDBQA
+   from langchain.vectorstores import PGVector
+
+   # Connect to the PostgreSQL vector database
+   vector_store = PGVector.from_documents(
+       documents,
+       embeddings,
+       connection_string="postgresql://user:password@localhost/vector_db"
+   )
+
+   # Use OpenWebUI’s model with RAG
+   qa_system = VectorDBQA.from_chain_type(
+       llm=pipeline("text-generation", model="gpt-3.5-turbo"),
+       chain_type="stuff",
+       vectorstore=vector_store
+   )
+   ```
+
+---
+
+#### **7. Frontend with OpenWebUI**
+
+- OpenWebUI provides a robust web-based UI for interactions.
+- Extend the interface to include a **Help Desk Assistant Panel**:
+  - Add options to query the RAG system.
+  - Support file/document uploads for context-aware queries.
+
+---
+
+#### **8. Deployment with Nginx and Systemd**
+
+**Nginx for Reverse Proxy**:
+1. Configure Nginx to route traffic to OpenWebUI:
+   ```bash
+   sudo nano /etc/nginx/sites-available/openwebui
+   ```
+   ```nginx
+   server {
+       listen 80;
+       server_name your_domain.com;
+
+       location / {
+           proxy_pass http://127.0.0.1:5000;
+           proxy_set_header Host $host;
+           proxy_set_header X-Real-IP $remote_addr;
+       }
+   }
+   ```
+2. Enable the configuration:
+   ```bash
+   sudo ln -s /etc/nginx/sites-available/openwebui /etc/nginx/sites-enabled/
+   sudo systemctl restart nginx
+   ```
+
+**Systemd Service for OpenWebUI**:
+1. Create a service file:
+   ```bash
+   sudo nano /etc/systemd/system/openwebui.service
+   ```
+   ```ini
+   [Unit]
+   Description=OpenWebUI Service
+   After=network.target
+
+   [Service]
+   ExecStart=/usr/bin/python /path/to/OpenWebUI/app.py
+   WorkingDirectory=/path/to/OpenWebUI
+   Restart=always
+   User=your_username
+
+   [Install]
+   WantedBy=multi-user.target
+   ```
+2. Enable and start the service:
+   ```bash
+   sudo systemctl enable openwebui
+   sudo systemctl start openwebui
+   ```
+
+---
+
+### **Updated Summary**
+
+With **OpenWebUI**, the stack now includes:
+- **OpenWebUI**: A modular frontend for serving AI models.
+- **RAG Integration**: Using LangChain or Haystack with PostgreSQL for context-aware support.
+- **Streamlined Deployment**: Systemd and Nginx for production-ready service.
+
+**Advantages**:
+- Simplified interaction through a robust web interface.
+- Extensibility for various AI use cases, including document processing and customer queries.
+- GPU-accelerated performance for low-latency responses.
+
+Let me know if you'd like help customizing OpenWebUI or further integrating it into your setup! 🚀
