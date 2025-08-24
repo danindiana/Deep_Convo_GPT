@@ -1,71 +1,74 @@
 ```mermaid
 flowchart TD
-    A[Start: Pretrained Language Model]
-    A --> B[Initialize Policy Model π_θ and Proxy Model π_p from checkpoint]
-    B --> C[Load SFT data prompt p + ground truth g]
-    
-    subgraph Rollout_Phase[Rollout Phase]
-        D[For each prompt p, generate group of G completions]
-        D --> E[Sample reasoning t_i & answer a_i from π_θ with temperature τ]
-        E --> F[Format output as <think>t_i</think><answer>a_i</answer>]
+    A[Start: Pretrained Language Model] --> B[Initialize Policy Model π_θ<br>and Proxy Model π_p from checkpoint]
+    B --> C[Load SFT Data<br>Prompt p + Ground Truth g]
+
+    subgraph Rollout_Phase
+        C --> D[For each prompt p:<br>Generate Group of G Completions]
+        D --> E[Sample reasoning t_i & answer a_i<br>from π_θ with temperature τ]
+        E --> F[Format output with<br>&lt;think&gt;t_i&lt;/think&gt;<br>&lt;answer&gt;a_i&lt;/answer&gt;]
     end
-    
-    C --> Rollout_Phase
-    F --> G{Format Correct?}
-    
-    G -- No --> H[Set R_total = R_f]
-    G -- Yes --> I[Top-Down Path]
-    G -- Yes --> J[Bottom-Up Verification Path]
-    
-    subgraph Top_Down[Top-Down Path]
-        I --> K[Calculate reasoning perplexity P_r]
-        K --> L[Apply length normalization Nt]
-        L --> M[Discretize P_r to R_r]
-        M --> N[Calculate efficiency reward R_e]
-    end
-    
-    subgraph Bottom_Up[Bottom-Up Verification Path]
-        J --> O[Extract reasoning steps t_i]
-        O --> P[Validity Check]
-        O --> Q[Stability Check]
+
+    subgraph Reward_Calculation_Phase
+        F --> H{Format Correct?}
         
-        subgraph Validity_Check[Validity Check Subgraph B2]
-            P --> R[Multiple verification steps]
-            R --> S[Produce score S_valid via NAS verifier]
+        H -- Yes --> TOP[Top-Down Path]
+        H -- Yes --> BOT[Bottom-Up Verification Path]
+        H -- No --> N[Set R_total = R_f]
+
+        TOP --> I[Calculate Reasoning Perplexity P_r]
+        I --> J[Apply length normalization Nt]
+        J --> K[Discretize P_r to R_r]
+        K --> L[Calculate Efficiency Reward R_e]
+        
+        BOT --> B1[Extract Reasoning Steps t_i]
+        B1 --> B2[Validity Check]
+        B1 --> B3[Stability Check]
+        
+        subgraph B2[Validity Check]
+            B21[Step 1] --> B22[Step 2] --> B23[...] --> B24[Step N]
+            B24 --> B25[Validity Score S_valid<br>NAS-derived Verifier]
         end
         
-        subgraph Stability_Check[Stability Check Subgraph B3]
-            Q --> T[Embed step using f_φ]
-            T --> U[Compute Wasserstein distance W_2 from expected distribution]
-            U --> V[Compute stability score S_stable = 1 / 1+W_2]
+        subgraph B3[Stability Check]
+            B31[Embed Step via f_φ] --> B32[Compute Wasserstein Distance W_2<br>from expected step distribution]
+            B32 --> B33[Stability Score S_stable = 1 / 1+W_2]
         end
         
-        S --> W[Combine scores to get robustness reward R_robust]
-        V --> W
+        B25 --> CMB
+        B33 --> CMB
+        CMB[Combine Scores] --> R_robust[Calculate Robustness Reward<br>R_robust = ChebyshevS_valid, S_stable]
+        
+        L --> M
+        R_robust --> M[Combine Rewards]
+        
+        M --> R_total[R_total = w_f R_f + w_r R_r + w_e R_e + w_robust R_robust]
     end
-    
-    N --> X[Combine rewards: R_total = w_f R_f + w_r R_r + w_e R_e + w_robust R_robust]
-    W --> X
-    H --> X
-    
-    X --> Y[Optimization Phase: Compute group-normalized advantage A_i using GRPO]
-    Y --> Z[Update policy π_θ via PPO with KL divergence penalty]
-    
-    Z --> AA{Synchronization Phase: Every T_sync steps}
-    AA -- Yes --> AB[Sync proxy model π_p by exponential smoothing: π_p ← α * π_p + 1-α*π_θ]
-    AA -- No --> AC[Continue training]
-    
-    AB --> AC
-    AC --> AD{Training complete?}
-    AD -- No --> C
-    AD -- Yes --> AE[Final verifier-free incentivized model]
-    
-    %% Style nodes for visual distinction
-    classDef process fill:#e1f5fe,stroke:#01579b
-    classDef decision fill:#fff3e0,stroke:#e65100
-    classDef terminal fill:#e8f5e8,stroke:#1b5e20
-    
-    class A,B,C,D,E,F,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,AB,AC process
-    class G,AA,AD decision
-    class AE terminal
+
+    subgraph Optimization_Phase
+        R_total --> O[Compute Group-Normalized Advantage A_i<br>using GRPO]
+        N --> O
+        O --> P[Update Policy π_θ via PPO<br>with KL divergence penalty]
+    end
+
+    subgraph Synchronization_Phase
+        P --> Q[Every T_sync steps:<br>Sync Proxy Model π_p]
+        Q --> R[Exponential Smoothing:<br>π_p ← α π_p + 1-α π_θ]
+    end
+
+    R --> S{Training Complete?}
+    S -- No --> C
+    S -- Yes --> T[Final Verifier-Free<br>Incentivized Model]
+
+    style A fill:#4b7bec,color:#ffffff
+    style T fill:#26de81,color:#000000
+    style Rollout_Phase fill:#a55eea,color:#ffffff
+    style Reward_Calculation_Phase fill:#fd9644,color:#000000
+    style Optimization_Phase fill:#2bcbba,color:#000000
+    style Synchronization_Phase fill:#fc5c65,color:#ffffff
+    style TOP fill:#fed330,color:#000000
+    style BOT fill:#4b7bec,color:#ffffff
+    style B2 fill:#20bf6b,color:#000000
+    style B3 fill:#8854d0,color:#ffffff
+    style R_robust fill:#eb3b5a,color:#ffffff```
 ```
