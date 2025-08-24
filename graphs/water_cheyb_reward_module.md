@@ -60,17 +60,17 @@ flowchart TD
     S -- No --> C
     S -- Yes --> T[Final Verifier-Free<br>Incentivized Model]
 
-    style A fill:#e1f5fe
-    style T fill:#f1f8e9
-    style Rollout_Phase fill:#f3e5f5
-    style Reward_Calculation_Phase fill:#fff3e0
-    style Optimization_Phase fill:#e8f5e9
-    style Synchronization_Phase fill:#ffcdd2
-    style TOP fill:#ffecb3
-    style BOT fill:#bbdefb
-    style B2 fill:#c8e6c9
-    style B3 fill:#d1c4e9
-    style R_robust fill:#ffcdd2
+    style A fill:#4b7bec,color:#ffffff
+    style T fill:#26de81,color:#000000
+    style Rollout_Phase fill:#a55eea,color:#ffffff
+    style Reward_Calculation_Phase fill:#fd9644,color:#000000
+    style Optimization_Phase fill:#2bcbba,color:#000000
+    style Synchronization_Phase fill:#fc5c65,color:#ffffff
+    style TOP fill:#fed330,color:#000000
+    style BOT fill:#4b7bec,color:#ffffff
+    style B2 fill:#20bf6b,color:#000000
+    style B3 fill:#8854d0,color:#ffffff
+    style R_robust fill:#eb3b5a,color:#ffffff
 ```
 ```mermaid
 flowchart TD
