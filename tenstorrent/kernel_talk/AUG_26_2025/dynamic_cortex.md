@@ -1,4 +1,48 @@
 ```mermaid
+graph TD
+    %% Define Styles for a Black Background
+    classDef cortex fill:#4a4e69,stroke:#9a8c98,stroke-width:2px,color:#f2e9e4
+    classDef region fill:#22223b,stroke:#c9ada7,stroke-width:2px,color:#f2e9e4
+    classDef structure fill:#3c324b,stroke:#a68a93,stroke-width:2px,color:#f2e9e4
+    classDef neuron fill:#003049,stroke:#d62828,stroke-width:2px,color:#fcf6bd
+    classDef pathway fill:#003049,stroke:#f77f00,stroke-width:2px,color:#fcf6bd
+
+    %% Define Nodes and Shapes
+    A([Neocortex]):::cortex --> B(Visual Cortex):::region
+
+    subgraph V1 Area
+        C(Primary Visual Cortex - V1):::region
+        C --> C1((Cortical Layers)):::structure
+        C1 --> C1a{Layer 4}:::neuron
+        C1 --> C1b{Deep Cortical Layers}:::neuron
+        C --> C2((Neurons)):::structure
+        C2 --> C2a{Excitatory Neurons}:::neuron
+        C2 --> C2b{Inhibitory Interneurons}:::neuron
+        C2b --> C2bi{Parvalbumin-expressing}:::neuron
+    end
+
+    subgraph LM Area
+        D(Lateromedial Higher Area - LM):::region
+        D --> D1((Cortical Layers)):::structure
+        D --> D2((Neurons)):::structure
+        D2 --> D2a{Excitatory Neurons}:::neuron
+        D2 --> D2b{Inhibitory Interneurons}:::neuron
+        D2b --> D2bi{Parvalbumin-expressing}:::neuron
+    end
+
+    subgraph Projections
+        E((Inter-areal Projections)):::structure
+        E -- Feedforward --> D
+        D -- Feedback --> C
+    end
+
+    %% Define Connections
+    B --> C
+    B --> D
+    B --> E
+```
+
+```mermaid
 %%{init: {'theme':'base', 'themeVariables': { 'primaryColor': '#2d3748', 'primaryTextColor': '#ffffff', 'lineColor': '#a0aec0', 'textColor': '#ffffff' }}}%%
 
 flowchart TD
