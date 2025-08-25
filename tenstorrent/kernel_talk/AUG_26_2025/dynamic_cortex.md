@@ -58,3 +58,83 @@ flowchart TD
     style V1 fill:#2c5282,stroke:#90cdf4,color:#ffffff
     style LM fill:#975a16,stroke:#fbd38d,color:#ffffff
 ```
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor': '#2d3748', 'primaryTextColor': '#ffffff', 'lineColor': '#a0aec0', 'textColor': '#ffffff' }}}%%
+
+%%  Time axis is left-to-right (0 ms → 500 ms).
+%%  Solid arrows = synchronous (blocking) 150 ms windows.
+%%  Dashed arrows = non-blocking (asynchronous) 15 ms micro-slots inside each window.
+%%  Red vs Green = behavioural context (No-Go vs Go) sets the micro-slot cadence.
+
+flowchart LR
+    %% --- Time ruler ----------------------------------------------------------
+    T0["0 ms"]
+    T1["150 ms"]
+    T2["300 ms"]
+    T3["450 ms"]
+    T0 --> T1 --> T2 --> T3
+
+    %% --- Static 150 ms synchronous windows (blocking) ------------------------
+    subgraph Sync_Windows
+        SW1["Sync-W₁ 0-150 ms"]
+        SW2["Sync-W₂ 150-300 ms"]
+        SW3["Sync-W₃ 300-450 ms"]
+        SW4["Sync-W₄ 450-600 ms"]
+    end
+
+    %% --- V1 & LM macro blocks -------------------------------------------------
+    V1_BLOCK["V1 Macro Block\n(blocking 150 ms)"]
+    LM_BLOCK["LM Macro Block\n(blocking 150 ms)"]
+
+    SW1 --> V1_BLOCK
+    SW1 --> LM_BLOCK
+    SW2 --> V1_BLOCK
+    SW2 --> LM_BLOCK
+    SW3 --> V1_BLOCK
+    SW3 --> LM_BLOCK
+    SW4 --> V1_BLOCK
+    SW4 --> LM_BLOCK
+
+    %% --- Feed-Forward synchronous channel -----------------------------------
+    FF_SYNCH["FF Sync Channel\nV1→LM\n150 ms blocking"]
+
+    V1_BLOCK -.->|solid\n150 ms blocking| FF_SYNCH
+    FF_SYNCH -.->|solid\n150 ms blocking| LM_BLOCK
+
+    %% --- Feed-Back micro-slot channels ---------------------------------------
+    subgraph Micro_Go
+        direction TB
+        Go_FB["FB Micro Slots\nLM→V1\nτ≈15 ms (Go)"]
+    end
+
+    subgraph Micro_NoGo
+        direction TB
+        NoGo_FB["FB Micro Slots\nLM→V1\nτ≈120 ms (No-Go)"]
+    end
+
+    %% Micro-slot arrows (non-blocking, dashed)
+    LM_BLOCK -.->|dashed\n15 ms non-blocking| Go_FB
+    LM_BLOCK -.->|dashed\n120 ms non-blocking| NoGo_FB
+
+    Go_FB -.->|dashed\nnon-blocking| V1_BLOCK
+    NoGo_FB -.->|dashed\nnon-blocking| V1_BLOCK
+
+    %% --- Behavioural context switch ------------------------------------------
+    Context{{"Behavioural Context\nRew? (Go vs No-Go)"}}
+
+    Context -->|Go| Go_FB
+    Context -->|No-Go| NoGo_FB
+
+    %% --- Legend for arrow styles ---------------------------------------------
+    subgraph Legend
+        L1["── solid = 150 ms blocking window"]
+        L2["- - dashed = micro-slot non-blocking"]
+    end
+
+    %% Styling
+    style Context fill:#276749,stroke:#9ae6b4,color:#ffffff
+    style V1_BLOCK fill:#2c5282,stroke:#90cdf4,color:#ffffff
+    style LM_BLOCK fill:#975a16,stroke:#fbd38d,color:#ffffff
+    style Go_FB fill:#2f855a,stroke:#68d391,color:#ffffff
+    style NoGo_FB fill:#9b2c2c,stroke:#fc8181,color:#ffffff
+```
