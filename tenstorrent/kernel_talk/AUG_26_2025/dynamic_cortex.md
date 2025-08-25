@@ -1,5 +1,5 @@
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000' }}}%%
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor': '#2d3748', 'primaryTextColor': '#ffffff', 'lineColor': '#a0aec0', 'textColor': '#ffffff' }}}%%
 
 flowchart TD
     subgraph Stimulus
@@ -51,9 +51,10 @@ flowchart TD
     FB -.->|rotates\nCovStructV1,t| V1Pop
     FB -.->|shortens\nAutocorrV1,Δt| V1Pop
     
-    style G1 fill:#f5f5f5,stroke-dasharray: 5 5
-    style G2 fill:#f5f5f5,stroke-dasharray: 5 5
-    style Rew fill:#e8f5e8
-    style V1 fill:#e3f2fd
-    style LM fill:#fff3e0
+    %% Dark theme styles
+    style G1 fill:#4a5568,stroke:#a0aec0,stroke-dasharray: 5 5,color:#ffffff
+    style G2 fill:#4a5568,stroke:#a0aec0,stroke-dasharray: 5 5,color:#ffffff
+    style Rew fill:#276749,stroke:#9ae6b4,color:#ffffff
+    style V1 fill:#2c5282,stroke:#90cdf4,color:#ffffff
+    style LM fill:#975a16,stroke:#fbd38d,color:#ffffff
 ```
