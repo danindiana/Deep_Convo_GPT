@@ -138,3 +138,55 @@ flowchart LR
     style Go_FB fill:#2f855a,stroke:#68d391,color:#ffffff
     style NoGo_FB fill:#9b2c2c,stroke:#fc8181,color:#ffffff
 ```
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor': '#2d3748', 'primaryTextColor': '#ffffff', 'lineColor': '#a0aec0', 'textColor': '#ffffff' }}}%%
+
+flowchart TD
+    subgraph Experiment
+        Stim["500 ms static grating"]
+        Silence["8 × 150 ms opto-silences\n(tiled across 0–500 ms)"]
+        Stim --> Silence
+    end
+
+    subgraph Recordings
+        V1["V1 neurons\n(≤371 units)"]
+        LM["LM neurons\n(≤435 units)"]
+    end
+
+    subgraph "Measured Outcomes"
+        %% 1. Feed-forward silencing effects
+        FF[/"V1 silence → LM firing change
+          <br>Median −33 % excitatory"/]
+
+        %% 2. Feedback silencing effects
+        FB[/"LM silence → V1 firing change
+          <br>Median +4 % (mixed)"/]
+
+        %% 3. Communication-direction similarity decay
+        CommDecay[/"Cross-validated cosine similarity
+                   <br>of CommDir decays
+                   <br>Go feedback τ ≈ 15 ms
+                   <br>No-Go feedback τ ≈ 121 ms"/]
+
+        %% 4. Autocorrelation modulation
+        Auto[/"V1 spike-count autocorrelation
+               <br>is **higher** when LM feedback is intact
+               <br>and higher in Go vs No-Go"/]
+    end
+
+    %% Experimental flow
+    Silence -->|silence V1| FF
+    Silence -->|silence LM| FB
+    Silence -->|all 8 windows| CommDecay
+    Silence -->|feedback intact| Auto
+
+    %% Styling for dark theme
+    style Stim fill:#4a5568,stroke:#a0aec0,color:#ffffff
+    style Silence fill:#4a5568,stroke:#a0aec0,color:#ffffff
+    style V1 fill:#2c5282,stroke:#90cdf4,color:#ffffff
+    style LM fill:#975a16,stroke:#fbd38d,color:#ffffff
+    style FF fill:#553c9a,stroke:#b794f4,color:#ffffff
+    style FB fill:#553c9a,stroke:#b794f4,color:#ffffff
+    style CommDecay fill:#553c9a,stroke:#b794f4,color:#ffffff
+    style Auto fill:#553c9a,stroke:#b794f4,color:#ffffff
+```
