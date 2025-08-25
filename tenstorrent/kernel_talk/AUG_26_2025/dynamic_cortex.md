@@ -190,3 +190,69 @@ flowchart TD
     style CommDecay fill:#553c9a,stroke:#b794f4,color:#ffffff
     style Auto fill:#553c9a,stroke:#b794f4,color:#ffffff
 ```
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor': '#2d3748', 'primaryTextColor': '#ffffff', 'lineColor': '#a0aec0', 'textColor': '#ffffff' }}}%%
+
+flowchart TD
+    %% ------------------ GLOBAL CLOCK ------------------
+    Clock["Global Clock\n0 – 500 ms stimulus\nΔt = 65 ms bins"]
+
+    %% ------------------ AREAS & CHANNELS --------------
+    subgraph Pathways
+        V1[Area V1]:::area
+        LM[Area LM]:::area
+    end
+
+    subgraph FeedForward
+        FF["FF Channel V1→LM\nEffective Δt = 65 ms"]:::channel
+        SilenceV1["V1 Silence Window\n150 ms block @ any Δt"]:::silence
+    end
+
+    subgraph FeedBack
+        FB["FB Channel LM→V1\nEffective Δt = 65 ms (No-Go)\nEffective Δt < 15 ms (Go)"]:::channel
+        SilenceLM["LM Silence Window\n150 ms block @ any Δt"]:::silence
+    end
+
+    %% ------------------ SYNCHRONIZATION WINDOWS -------
+    subgraph SyncWindows
+        SyncFF["Sync Window FF\nOpen 0 – 500 ms\nResolution 65 ms"]:::sync
+        SyncFB["Sync Window FB\nOpen 0 – 500 ms\nResolution 65 ms\nRew ↓→ 15 ms"]:::sync
+    end
+
+    %% ------------------ BLOCK / NON-BLOCK --------------
+    subgraph BlockingLogic
+        BlockV1["Block V1 influence\n→ LM activity frozen\n150 ms"]:::block
+        BlockLM["Block LM influence\n→ V1 activity frozen\n150 ms"]:::block
+    end
+
+    %% ------------------ TIME-TO-INFLUENCE --------------
+    subgraph TimeInfluence
+        TimeFF["Time-to-Influence FF\n≤ 65 ms after silence"]:::time
+        TimeFB["Time-to-Influence FB\n≤ 65 ms (No-Go)\n≤ 15 ms (Go)"]:::time
+    end
+
+    %% ------------------ CONNECTIONS -------------------
+    Clock --> SilenceV1
+    Clock --> SilenceLM
+    Clock --> SyncFF
+    Clock --> SyncFB
+
+    SilenceV1 --> BlockV1
+    BlockV1 --> FF
+    FF --> SyncFF
+    SyncFF --> TimeFF
+
+    SilenceLM --> BlockLM
+    BlockLM --> FB
+    FB --> SyncFB
+    SyncFB --> TimeFB
+
+    %% ------------------ STYLING -------------------
+    classDef area fill:#2c5282,stroke:#90cdf4,color:#ffffff
+    classDef channel fill:#553c9a,stroke:#b794f4,color:#ffffff
+    classDef silence fill:#9b2c2c,stroke:#fc8181,color:#ffffff
+    classDef sync fill:#2f855a,stroke:#68d391,color:#ffffff
+    classDef block fill:#975a16,stroke:#fbd38d,color:#ffffff
+    classDef time fill:#0c4a6e,stroke:#7dd3fc,color:#ffffff
+    style Clock fill:#4a5568,stroke:#a0aec0,color:#ffffff
+```
