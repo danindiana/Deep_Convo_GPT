@@ -1,5 +1,82 @@
 ```mermaid
 %%{init:{'theme':'dark'}}%%
+graph TD
+    %% ---------- GLOBAL TIMELINE ----------
+    Timeline["0 – 500 ms stimulus\n8 silencing onsets: 0, 56, 112, 168, 224, 280, 336, 392 ms"]
+
+    %% ---------- LEFT HEMISPHERE (POSTERIOR) ----------
+    subgraph LeftOccipital ["Left (Occipital)"]
+        V1["V1 (posterior)"]
+    end
+
+    %% ---------- RIGHT HEMISPHERE (ANTERIOR) ----------
+    subgraph RightTemporalParietal ["Right (Temporal/Parietal)"]
+        LM["LM (anterior)"]
+    end
+
+    %% ---------- DORSAL FEEDBACK (LM → V1) ----------
+    subgraph DorsalFB ["Dorsal Feedback"]
+        FB["Feedback (LM→V1)\nτ: Go 15 ms | No-Go 121 ms"]
+    end
+
+    %% ---------- VENTRAL FEED-FORWARD (V1 → LM) ----------
+    subgraph VentralFF ["Ventral Feed-Forward"]
+        FF["Feed-forward (V1→LM)\nτ: Go 122 ms | No-Go 121 ms"]
+    end
+
+    %% ---------- SILENCING WINDOWS ----------
+    SilenceV1["Silence V1\n150 ms"]
+    SilenceLM["Silence LM\n150 ms"]
+
+    Timeline --> SilenceV1
+    Timeline --> SilenceLM
+
+    %% ---------- QUANTIFIED RESULTS ----------
+    ResultV1["LM firing\n↓ −33 %\n(excitation reduced)"]
+    ResultLM["V1 firing\n↕ +4 %\n(mixed exc./inh.)"]
+
+    SilenceV1 --> ResultV1
+    SilenceLM --> ResultLM
+
+    %% ---------- COVARIANCE & AUTOCORRELATION ----------
+    Cov["V1 PCs rotate faster\nGo vs No-Go (LM intact)"]
+    Auto["V1 autocorr ↑\nwith feedback index"]
+
+    SilenceLM --> Cov
+    SilenceLM --> Auto
+
+    %% ---------- OFFSET ARCS ----------
+    LM -->|dorsal| FB
+    FB -->|dorsal| V1
+
+    V1 -->|ventral| FF
+    FF -->|ventral| LM
+
+    %% Use invisible edges for layout positioning
+    V1 ~~~ Timeline
+    LM ~~~ Timeline
+
+    %% Style definitions optimized for dark background
+    classDef area fill:#1a365d,stroke:#63b3ed,stroke-width:2px,color:#e2e8f0
+    classDef channel fill:#553c20,stroke:#f6ad55,stroke-width:2px,color:#fffaf0
+    classDef event fill:#1c4532,stroke:#68d391,stroke-width:2px,color:#f0fff4
+    classDef result fill:#2d3748,stroke:#a0aec0,stroke-width:2px,color:#f7fafc
+    
+    %% Apply classes to nodes
+    class V1,LM area
+    class FB,FF channel
+    class SilenceV1,SilenceLM event
+    class ResultV1,ResultLM,Cov,Auto,Timeline result
+    
+    %% Subgraph styles
+    style LeftOccipital fill:#1a202c,stroke:#4299e1,stroke-width:2px,color:#e2e8f0
+    style RightTemporalParietal fill:#1a202c,stroke:#4299e1,stroke-width:2px,color:#e2e8f0
+    style DorsalFB fill:#1a202c,stroke:#4299e1,stroke-width:2px,color:#e2e8f0
+    style VentralFF fill:#1a202c,stroke:#4299e1,stroke-width:2px,color:#e2e8f0
+```
+
+```mermaid
+%%{init:{'theme':'dark'}}%%
 graph LR
     %% ---------- GLOBAL TIMELINE ----------
     Timeline["Global Clock\n0 – 500 ms stimulus\n8 silencing onsets @ 0, 56, 123, 189, 256, 323, 390, 456 ms"]
