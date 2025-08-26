@@ -1,4 +1,81 @@
 ```mermaid
+%%{init:{'theme':'dark'}}%%
+graph LR
+    %% ---------- GLOBAL TIMELINE ----------
+    Timeline["Global Clock\n0 – 500 ms stimulus\n8 silencing onsets @ 0, 56, 123, 189, 256, 323, 390, 456 ms"]
+
+    %% ---------- LEFT (OCCIPITAL) ----------
+    subgraph LeftOccipital ["Left (Occipital)"]
+        V1["V1 neurons\n(≤371 units)"]
+    end
+
+    %% ---------- RIGHT (TEMPORAL/PARIETAL) ----------
+    subgraph RightTemporalParietal ["Right (Temporal/Parietal)"]
+        LM["LM neurons\n(≤435 units)"]
+    end
+
+    %% ---------- DORSAL FEEDBACK ----------
+    subgraph DorsalFB["Dorsal Feedback"]
+        FB["Feedback Channel\nLM→V1 (τ: Go≈15 ms, No-Go≈121 ms)"]
+    end
+
+    %% ---------- VENTRAL FEED-FORWARD ----------
+    subgraph VentralFF["Ventral Feed-Forward"]
+        FF["Feed-forward Channel\nV1→LM (τ: Go≈122 ms, No-Go≈121 ms)"]
+    end
+
+    %% ---------- SILENCING WINDOWS ----------
+    SilenceV1["V1 silenced 150 ms\n→ LM spike change"]
+    SilenceLM["LM silenced 150 ms\n→ V1 spike change"]
+
+    Timeline --> SilenceV1
+    Timeline --> SilenceLM
+
+    %% ---------- OBSERVED ACTIVITY CHANGES ----------
+    ActivityFF["LM firing\nMedian change −33 %\n(excitation reduced)"]
+    ActivityFB["V1 firing\nMedian change +4 %\n(mixed exc./inh.)"]
+
+    SilenceV1 --> ActivityFF
+    SilenceLM --> ActivityFB
+
+    %% ---------- COVARIANCE & AUTOCORRELATION ----------
+    Cov["V1 covariance PCs rotate faster\nGo vs No-Go (only when LM intact)"]
+    Auto["V1 autocorrelation strength\ncorrelates positively with\nfeedback influence index"]
+
+    SilenceLM --> Cov
+    SilenceLM --> Auto
+
+    %% ---------- OFFSET ARCS ----------
+    FF -.->|ventral| LM
+    V1 -.->|ventral| FF
+    FB -.->|dorsal| V1
+    LM -.->|dorsal| FB
+
+    %% Use invisible edges for layout positioning instead of ghost nodes
+    V1 ~~~ Timeline
+    LM ~~~ Timeline
+
+    %% Style definitions optimized for dark background
+    classDef area fill:#1a365d,stroke:#63b3ed,stroke-width:2px,color:#e2e8f0
+    classDef channel fill:#553c20,stroke:#f6ad55,stroke-width:2px,color:#fffaf0
+    classDef event fill:#1c4532,stroke:#68d391,stroke-width:2px,color:#f0fff4
+    classDef result fill:#2d3748,stroke:#a0aec0,stroke-width:2px,color:#f7fafc
+    classDef ghost fill:transparent,stroke:transparent
+    
+    %% Apply classes to nodes
+    class V1,LM area
+    class FF,FB channel
+    class SilenceV1,SilenceLM event
+    class ActivityFF,ActivityFB,Cov,Auto result
+    class Timeline result
+    
+    %% Subgraph styles
+    style LeftOccipital fill:#1a202c,stroke:#4299e1,stroke-width:2px,color:#e2e8f0
+    style RightTemporalParietal fill:#1a202c,stroke:#4299e1,stroke-width:2px,color:#e2e8f0
+    style DorsalFB fill:#1a202c,stroke:#4299e1,stroke-width:2px,color:#e2e8f0
+    style VentralFF fill:#1a202c,stroke:#4299e1,stroke-width:2px,color:#e2e8f0
+```
+```mermaid
 graph TD
     %% Define Styles for a Black Background
     classDef cortex fill:#4a4e69,stroke:#9a8c98,stroke-width:3px,color:#f2e9e4
