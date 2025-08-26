@@ -1,4 +1,66 @@
 ```mermaid
+graph LR
+    %% Timeline with 8 silencing onsets
+    T0[0 ms]:::timeline
+    T56[56 ms]:::timeline
+    T112[112 ms]:::timeline
+    T168[168 ms]:::timeline
+    T224[224 ms]:::timeline
+    T280[280 ms]:::timeline
+    T336[336 ms]:::timeline
+    T392[392 ms]:::timeline
+
+    %% Neural structures
+    V1["V1 (Visual Cortex)"]:::area
+    LM["LM (Lateral Motor Pathway)"]:::area
+
+    %% Neural connections
+    V1 -->|Ventral Pathway| LM
+    LM -->|Dorsal Pathway| V1
+
+    %% Silencing events
+    S_V1["Silencing V1 (150ms)"]:::event
+    S_LM["Silencing LM (150ms)"]:::event
+
+    %% Results
+    R_V1["LM activity: -33% (excitation reduced)"]:::result
+    R_LM["V1 activity: ?"]:::result
+
+    %% Connections
+    T0 --> S_V1
+    T56 --> S_V1
+    T112 --> S_V1
+    T168 --> S_V1
+    T224 --> S_V1
+    T280 --> S_V1
+    T336 --> S_V1
+    T392 --> S_V1
+
+    T0 --> S_LM
+    T56 --> S_LM
+    T112 --> S_LM
+    T168 --> S_LM
+    T224 --> S_LM
+    T280 --> S_LM
+    T336 --> S_LM
+    T392 --> S_LM
+
+    S_V1 --> R_V1
+    S_LM --> R_LM
+
+    %% Style definitions
+    classDef background fill:#1e1e2e,stroke:#333,stroke-width:0px
+    classDef timeline fill:#2c2c3c,stroke:#444,stroke-width:1px
+    classDef area fill:#2c2c3c,stroke:#444,stroke-width:1px
+    classDef event fill:#3c3c4c,stroke:#555,stroke-width:1px
+    classDef result fill:#3c3c4c,stroke:#555,stroke-width:1px
+    class T0,T56,T112,T168,T224,T280,T336,T392 timeline
+    class V1,LM area
+    class S_V1,S_LM event
+    class R_V1,R_LM result
+```
+
+```mermaid
 %%{init:{'theme':'dark'}}%%
 graph TD
     %% ---------- GLOBAL TIMELINE ----------
