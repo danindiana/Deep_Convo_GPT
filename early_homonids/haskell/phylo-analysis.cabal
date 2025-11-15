@@ -1,0 +1,71 @@
+cabal-version:       2.4
+name:                phylo-analysis
+version:             1.0.0
+synopsis:            Type-safe phylogenetic analysis for early hominids
+description:
+    A comprehensive, type-safe implementation of phylogenetic tree analysis
+    for early hominid evolution, leveraging Haskell's powerful type system
+    to ensure correctness and prevent logical errors at compile time.
+    .
+    Features include:
+    * Phylogenetic tree construction with algebraic data types
+    * Trait evolution modeling with type-safe calculations
+    * Distance metrics for phylogenetic analysis
+    * Statistical analysis of evolutionary patterns
+    * Selection pressure detection and quantification
+
+homepage:            https://github.com/danindiana/Deep_Convo_GPT
+license:             MIT
+license-file:        ../LICENSE
+author:              Phylogenetic Analysis Team
+maintainer:          phylo@example.com
+category:            Science, Bioinformatics
+build-type:          Simple
+extra-source-files:  README.md
+
+common shared-properties
+    default-language: Haskell2010
+    ghc-options:
+        -Wall
+        -Wcompat
+        -Widentities
+        -Wincomplete-record-updates
+        -Wincomplete-uni-patterns
+        -Wmissing-export-lists
+        -Wmissing-home-modules
+        -Wpartial-fields
+        -Wredundant-constraints
+        -O2
+
+library
+    import:           shared-properties
+    exposed-modules:
+        PhyloTree
+        PhyloAnalysis
+        TraitEvolution
+        PhyloDistance
+    build-depends:
+        base >= 4.14 && < 5,
+        containers >= 0.6 && < 0.8
+    hs-source-dirs:   .
+
+executable phylo-examples
+    import:           shared-properties
+    main-is:          Examples.hs
+    build-depends:
+        base >= 4.14 && < 5,
+        containers >= 0.6 && < 0.8,
+        phylo-analysis
+    hs-source-dirs:   .
+
+test-suite phylo-tests
+    import:           shared-properties
+    type:             exitcode-stdio-1.0
+    main-is:          Tests.hs
+    build-depends:
+        base >= 4.14 && < 5,
+        containers >= 0.6 && < 0.8,
+        QuickCheck >= 2.14 && < 2.16,
+        HUnit >= 1.6 && < 1.7,
+        phylo-analysis
+    hs-source-dirs:   .
