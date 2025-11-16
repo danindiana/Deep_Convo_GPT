@@ -69,66 +69,78 @@ mindmap
 
 ## Repository Structure
 
+The repository is now organized into six main domains for improved navigation and maintainability:
+
 ```mermaid
 graph TB
-    subgraph "Root Level"
-        ROOT[Deep_Convo_GPT]
-        BRAIN[Brain Models<br/>20+ Languages]
-        NN[Neural Networks<br/>Python/TF/PyTorch]
-        DOCS[Documentation<br/>README files]
+    ROOT[Deep_Convo_GPT]
+
+    subgraph "Main Domains"
+        RESEARCH[research/<br/>Neuroscience, Nanobots,<br/>Interdisciplinary]
+        IMPL[implementations/<br/>Brain Models, ML,<br/>Algorithms]
+        HW[hardware/<br/>Accelerators, GPU,<br/>Networking]
+        THEORY[theory/<br/>CS, Math, Crypto,<br/>Foundations]
+        DOCS[documentation/<br/>Notes, Conversations,<br/>References]
+        TOOLS[tools/<br/>Development,<br/>Utilities]
     end
 
-    subgraph "AI/ML Domain"
-        ATT[attention/<br/>GQA Research]
-        GRU[GRU/<br/>Gated Units]
-        RELU[RELU/<br/>Activations]
-        VAE[VAE/<br/>Autoencoders]
-        PILOT[Pilot_LLM_router]
-    end
-
-    subgraph "Hardware Domain"
-        TENS[tenstorrent/<br/>AI Accelerators]
-        GPU[GPU_new_uses/<br/>Optimization]
-        NIC[x540-T2_NIC/<br/>Network Cards]
-        COLOSSUS[colossus/<br/>Hardware Specs]
-    end
-
-    subgraph "Theory Domain"
-        GRAPHS[graphs/<br/>Algorithms & Viz]
-        CA[cellular_automata/<br/>Indexing & Crypto]
-        MARKOV[markov_chains]
-        POLY[polybius/<br/>Cryptography]
-    end
-
-    subgraph "Research Domain"
-        NANO[nanobots/<br/>Extensive Research]
-        NEURO[human_brain/<br/>Neuroscience]
-        RHN[Robert Hecht-Nielsen]
-        EARLY[early_homonids]
-    end
-
-    subgraph "Software & Dev"
-        SW[software_dev]
-        IDEAS[software_ideas]
-        CPP[C_PP/<br/>Algorithms]
-    end
-
-    ROOT --> BRAIN
-    ROOT --> NN
+    ROOT --> RESEARCH
+    ROOT --> IMPL
+    ROOT --> HW
+    ROOT --> THEORY
     ROOT --> DOCS
-    ROOT --> ATT
-    ROOT --> TENS
-    ROOT --> GRAPHS
-    ROOT --> NANO
-    ROOT --> SW
+    ROOT --> TOOLS
 
     style ROOT fill:#4a90e2,stroke:#333,stroke-width:3px,color:#fff
-    style BRAIN fill:#7cb342,stroke:#333,stroke-width:2px
-    style NN fill:#7cb342,stroke:#333,stroke-width:2px
-    style NANO fill:#e91e63,stroke:#333,stroke-width:2px
-    style TENS fill:#ff9800,stroke:#333,stroke-width:2px
-    style ATT fill:#9c27b0,stroke:#333,stroke-width:2px
+    style RESEARCH fill:#e91e63,stroke:#333,stroke-width:2px
+    style IMPL fill:#7cb342,stroke:#333,stroke-width:2px
+    style HW fill:#ff9800,stroke:#333,stroke-width:2px
+    style THEORY fill:#9c27b0,stroke:#333,stroke-width:2px
+    style DOCS fill:#42a5f5,stroke:#333,stroke-width:2px
+    style TOOLS fill:#66bb6a,stroke:#333,stroke-width:2px
 ```
+
+### Directory Overview
+
+```
+Deep_Convo_GPT/
+├── research/              # Research domains
+│   ├── neuroscience/      # Brain research, spike trains, arousal
+│   ├── nanobots/          # Nanobot theory and applications
+│   ├── emerging-technologies/  # Proof of workforce, etc.
+│   └── interdisciplinary/ # Buddhism, jumping spiders, phylogenetics, etc.
+│
+├── implementations/       # Code implementations
+│   ├── brain-models/      # 20+ language implementations
+│   │   └── polyglot/      # functional, systems, scientific, specialized, classic
+│   ├── machine-learning/  # Neural networks, attention, architectures
+│   └── algorithms/        # Graph algorithms, cellular automata
+│
+├── hardware/              # Hardware acceleration
+│   ├── accelerators/      # Tenstorrent, Colossus
+│   ├── gpu/              # GPU optimization and new uses
+│   ├── networking/       # x540-T2 NIC, DPDK
+│   └── voomrisc/         # VoomRISC architecture
+│
+├── theory/               # Theoretical foundations
+│   ├── computer-science/ # BCNF, PRAM computation
+│   ├── mathematics/      # Graph theory, Markov chains
+│   ├── cryptography/     # Polybius, zero-knowledge
+│   └── foundations/      # Gödel, logic
+│
+├── documentation/        # Documentation and notes
+│   ├── notes/           # Surprising facts, brain info
+│   ├── conversations/   # AI research dialogues
+│   ├── references/      # Learning resources
+│   └── personal/        # CV, achievements
+│
+└── tools/               # Development tools
+    ├── development/     # Software ideas and resources
+    ├── routing/         # LLM routing (Pilot)
+    └── utilities/       # Vagrant, scripts
+```
+
+Each major directory contains an `INDEX.md` file for detailed navigation.
 
 ## Git Workflow
 
@@ -308,12 +320,12 @@ Extensive theoretical framework covering:
 
 | Domain | Key Directories | Description |
 |--------|----------------|-------------|
-| **AI/ML** | `attention/`, `VAE/`, `GRU/`, `RELU/` | Neural network research and implementations |
-| **Brain** | Root `.apl`, `.awk`, `.py`, etc. files | Multi-language brain models |
-| **Hardware** | `tenstorrent/`, `GPU_new_uses/`, `colossus/` | Hardware acceleration and optimization |
-| **Theory** | `graphs/`, `cellular_automata/`, `markov_chains/` | Algorithms and theoretical CS |
-| **Research** | `nanobots/`, `human_brain/`, `Robert Hecht-Nielsen/` | Cutting-edge research topics |
-| **Software** | `software_dev/`, `C_PP/`, `Pilot_LLM_router/` | Development and tools |
+| **Research** | `research/neuroscience/`, `research/nanobots/`, `research/interdisciplinary/` | Neuroscience, nanobots, phylogenetics, and cross-domain research |
+| **Implementations** | `implementations/brain-models/`, `implementations/machine-learning/`, `implementations/algorithms/` | Brain models in 20+ languages, neural networks, graph algorithms |
+| **Hardware** | `hardware/accelerators/`, `hardware/gpu/`, `hardware/networking/` | Tenstorrent, GPU optimization, NIC configuration |
+| **Theory** | `theory/mathematics/`, `theory/cryptography/`, `theory/computer-science/` | Graph theory, Markov chains, cryptography, PRAM algorithms |
+| **Documentation** | `documentation/notes/`, `documentation/conversations/`, `documentation/personal/` | Research notes, AI dialogues, CV and achievements |
+| **Tools** | `tools/development/`, `tools/routing/`, `tools/utilities/` | Software ideas, LLM routing, development utilities |
 
 ### Quick Start
 
@@ -322,16 +334,21 @@ Extensive theoretical framework covering:
 git clone <repository-url>
 cd Deep_Convo_GPT
 
-# Explore brain models
-ls *.py *.cpp *.hs *.lisp
+# Explore brain models organized by language
+ls implementations/brain-models/polyglot/*/
 
 # Review neural network implementations
+cd implementations/machine-learning/neural-networks/
 python DeepBrainModel.py
 python VAE.py
 
 # Browse research documentation
-cd nanobots/
-ls README*.md
+cd ../../research/nanobots/
+ls *.md
+
+# Check INDEX files for navigation
+cat ../INDEX.md
+cat ../../implementations/INDEX.md
 ```
 
 ## Institutional Research Context
@@ -449,6 +466,7 @@ Research and educational purposes. Individual components may have specific licen
 
 ---
 
-**Last Updated**: 2025-11-14
-**Branch**: `claude/add-git-mermaid-diagrams-01KWgHKLQKf6fxDSLuHDbZXL`
+**Last Updated**: 2025-11-16
+**Branch**: `claude/organize-main-files-016c7saXXFT39XRJDXQoUPKR`
 **Maintained by**: Personal research initiative
+**Structure**: Fully reorganized into 6 main domains (see documentation/STRUCTURE_IMPROVEMENTS.md for details)
