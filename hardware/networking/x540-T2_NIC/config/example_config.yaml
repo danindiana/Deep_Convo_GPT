@@ -1,0 +1,33 @@
+# Example configuration for high-performance testing
+
+network:
+  # Large data transfer for thorough testing (1 GB)
+  data_size_mb: 1000
+
+  # Larger block size for better performance (10 MB)
+  block_size: 10485760
+
+  # Longer timeout for large transfers
+  listener_timeout: 30
+
+  # More retries for reliability
+  max_retries: 5
+
+  # Extended iPerf test duration
+  iperf_duration: 60
+
+  # Alternative port
+  default_port: 15000
+
+logging:
+  # Detailed log file
+  log_file: "detailed_network_test.log"
+
+  # Debug level logging for troubleshooting
+  log_level: "DEBUG"
+
+  # Detailed log format
+  log_format: "%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s"
+
+  # Console output enabled
+  console_output: true

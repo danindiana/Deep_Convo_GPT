@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  # Basic NIC diagnostics
+  nic-tools:
+    build:
+      context: .
+      target: base
+    image: x540-t2-nic-tools:latest
+    container_name: x540-nic-tools
+    network_mode: host
+    privileged: true
+    volumes:
+      - ./config:/app/config
+      - ./logs:/app/logs
+      - /sys:/sys
+      - /dev:/dev
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python3 -m src.diagnostics.nic_diagnostics
+
+  # DPDK-enabled diagnostics
+  nic-tools-dpdk:
+    build:
+      context: .
+      target: dpdk
+    image: x540-t2-nic-tools:dpdk
+    container_name: x540-nic-tools-dpdk
+    network_mode: host
+    privileged: true
+    volumes:
+      - ./config:/app/config
+      - ./logs:/app/logs
+      - /sys:/sys
+      - /dev:/dev
+      - /mnt/huge:/mnt/huge
+    environment:
+      - PYTHONUNBUFFERED=1
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    command: python3 -m src.diagnostics.nic_diagnostics
+
+  # Development environment
+  nic-tools-dev:
+    build:
+      context: .
+      target: development
+    image: x540-t2-nic-tools:dev
+    container_name: x540-nic-tools-dev
+    network_mode: host
+    privileged: true
+    volumes:
+      - .:/app
+      - /sys:/sys
+      - /dev:/dev
+    environment:
+      - PYTHONUNBUFFERED=1
+    stdin_open: true
+    tty: true
+    command: /bin/bash
+
+  # iPerf server
+  iperf-server:
+    build:
+      context: .
+      target: base
+    image: x540-t2-nic-tools:latest
+    container_name: iperf-server
+    network_mode: host
+    privileged: true
+    command: iperf -s -i 1
+
+  # iPerf client
+  iperf-client:
+    build:
+      context: .
+      target: base
+    image: x540-t2-nic-tools:latest
+    container_name: iperf-client
+    network_mode: host
+    privileged: true
+    environment:
+      - SERVER_IP=${SERVER_IP:-192.168.10.1}
+      - TEST_DURATION=${TEST_DURATION:-10}
+    command: >
+      sh -c "iperf -c $$SERVER_IP -t $$TEST_DURATION -i 1"

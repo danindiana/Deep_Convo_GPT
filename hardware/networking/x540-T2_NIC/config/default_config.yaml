@@ -1,0 +1,34 @@
+# Default configuration for X540-T2 NIC testing
+
+network:
+  # Amount of data to transfer for testing (in MB)
+  data_size_mb: 500
+
+  # Transfer block size (bytes)
+  # Default: 1 MB (1024 * 1024)
+  block_size: 1048576
+
+  # Timeout for listener connections (seconds)
+  listener_timeout: 15
+
+  # Maximum number of connection retries
+  max_retries: 3
+
+  # Duration for iPerf tests (seconds)
+  iperf_duration: 10
+
+  # Default port for testing
+  default_port: 12345
+
+logging:
+  # Log file path
+  log_file: "x540t2_network_test.log"
+
+  # Logging level: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  log_level: "INFO"
+
+  # Log message format
+  log_format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+  # Enable console output
+  console_output: true
