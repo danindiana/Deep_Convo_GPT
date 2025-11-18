@@ -139,3 +139,7 @@ checkpoint
 
 # Archive
 archive/
+
+# Separate repositories (not subdirectories)
+proof_of_workforce/
+proof_of_workforce.tar.gz
