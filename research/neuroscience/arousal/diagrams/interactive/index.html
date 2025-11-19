@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Visualizations - Sexual Arousal Neuroscience</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+
+        .intro {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .intro h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .intro p {
+            color: #555;
+            line-height: 1.8;
+            font-size: 1.05em;
+        }
+
+        .visualization-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .viz-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .viz-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .viz-thumbnail {
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .viz-thumbnail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1) 0%, transparent 60%);
+        }
+
+        .viz-content {
+            padding: 25px;
+        }
+
+        .viz-title {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .viz-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .viz-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .tag {
+            padding: 4px 12px;
+            background: #ecf0f1;
+            border-radius: 15px;
+            font-size: 0.85em;
+            color: #555;
+        }
+
+        .tag.d3 {
+            background: #ffe5e5;
+            color: #c0392b;
+        }
+
+        .tag.plotly {
+            background: #e5f4ff;
+            color: #2980b9;
+        }
+
+        .tag.interactive {
+            background: #e8f5e9;
+            color: #27ae60;
+        }
+
+        .viz-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .viz-button:hover {
+            background: #2980b9;
+        }
+
+        .features {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .features h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-item {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        .feature-item h3 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .feature-item p {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 30px;
+            opacity: 0.9;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .icon {
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 Interactive Visualizations</h1>
+            <p class="subtitle">Neuroscience of Sexual Arousal</p>
+        </header>
+
+        <div class="intro">
+            <h2>Welcome to the Interactive Visualization Gallery</h2>
+            <p>
+                Explore the complex mechanisms of sexual arousal through interactive visualizations.
+                Each visualization offers unique insights into neural networks, neurotransmitter dynamics,
+                and the computational models that help us understand arousal processes.
+                Click on any visualization below to begin exploring.
+            </p>
+        </div>
+
+        <div class="visualization-grid">
+            <!-- Brain Network Visualization -->
+            <div class="viz-card" onclick="window.location.href='brain_network.html'">
+                <div class="viz-thumbnail">
+                    <span class="icon">🔗</span>
+                </div>
+                <div class="viz-content">
+                    <div class="viz-title">Brain Network</div>
+                    <div class="viz-description">
+                        Interactive network graph showing connections between brain regions involved in sexual arousal.
+                        Explore excitatory, inhibitory, and modulatory pathways.
+                    </div>
+                    <div class="viz-tags">
+                        <span class="tag d3">D3.js</span>
+                        <span class="tag interactive">Interactive</span>
+                        <span class="tag">Network Graph</span>
+                    </div>
+                    <a href="brain_network.html" class="viz-button" onclick="event.stopPropagation()">Explore Network →</a>
+                </div>
+            </div>
+
+            <!-- Arousal Dynamics Dashboard -->
+            <div class="viz-card" onclick="window.location.href='arousal_dynamics.html'">
+                <div class="viz-thumbnail">
+                    <span class="icon">📊</span>
+                </div>
+                <div class="viz-content">
+                    <div class="viz-title">Arousal Dynamics</div>
+                    <div class="viz-description">
+                        Interactive dashboard for the dual control model. Adjust parameters to see how excitation
+                        and inhibition compete to produce arousal patterns.
+                    </div>
+                    <div class="viz-tags">
+                        <span class="tag plotly">Plotly</span>
+                        <span class="tag interactive">Interactive</span>
+                        <span class="tag">Simulation</span>
+                    </div>
+                    <a href="arousal_dynamics.html" class="viz-button" onclick="event.stopPropagation()">Open Dashboard →</a>
+                </div>
+            </div>
+
+            <!-- Neurotransmitter Timeline -->
+            <div class="viz-card" onclick="window.location.href='neurotransmitter_timeline.html'">
+                <div class="viz-thumbnail">
+                    <span class="icon">🧬</span>
+                </div>
+                <div class="viz-content">
+                    <div class="viz-title">Neurotransmitter Timeline</div>
+                    <div class="viz-description">
+                        Track how dopamine, oxytocin, prolactin, and other neurotransmitters change
+                        throughout the arousal cycle from baseline to resolution.
+                    </div>
+                    <div class="viz-tags">
+                        <span class="tag plotly">Plotly</span>
+                        <span class="tag">Timeline</span>
+                        <span class="tag">Neurochemistry</span>
+                    </div>
+                    <a href="neurotransmitter_timeline.html" class="viz-button" onclick="event.stopPropagation()">View Timeline →</a>
+                </div>
+            </div>
+
+            <!-- Python Script Card -->
+            <div class="viz-card" style="opacity: 0.9; border: 2px dashed #3498db;">
+                <div class="viz-thumbnail" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+                    <span class="icon">🐍</span>
+                </div>
+                <div class="viz-content">
+                    <div class="viz-title">Python Generator Script</div>
+                    <div class="viz-description">
+                        Generate additional Plotly visualizations including 3D phase space, parameter heatmaps,
+                        and individual comparison plots. Requires Python with plotly installed.
+                    </div>
+                    <div class="viz-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag plotly">Plotly</span>
+                        <span class="tag">Advanced</span>
+                    </div>
+                    <div style="background: #fff3cd; padding: 10px; border-radius: 5px; margin-bottom: 10px; font-size: 0.9em;">
+                        <strong>📋 Run:</strong> <code style="background: white; padding: 2px 6px; border-radius: 3px;">python scripts/visualization/generate_interactive_plots.py</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <h2>Features & Capabilities</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h3>🎯 Interactive Controls</h3>
+                    <p>Adjust parameters in real-time to see immediate effects on arousal dynamics and understand individual differences.</p>
+                </div>
+
+                <div class="feature-item">
+                    <h3>📈 Multiple Representations</h3>
+                    <p>View data as time series, networks, phase spaces, and heatmaps for comprehensive understanding.</p>
+                </div>
+
+                <div class="feature-item">
+                    <h3>🔬 Scientifically Accurate</h3>
+                    <p>Based on peer-reviewed research and mathematical models from neuroscience literature.</p>
+                </div>
+
+                <div class="feature-item">
+                    <h3>💡 Educational</h3>
+                    <p>Each visualization includes explanations, hover tooltips, and clinical relevance information.</p>
+                </div>
+
+                <div class="feature-item">
+                    <h3>🎨 Beautiful Design</h3>
+                    <p>Modern, responsive interfaces that work on all devices with smooth animations and transitions.</p>
+                </div>
+
+                <div class="feature-item">
+                    <h3>📊 Exportable</h3>
+                    <p>Download plots as images or interact with them in your browser. No installation required.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="intro">
+            <h2>About the Research</h2>
+            <p>
+                These visualizations are part of a comprehensive neuroscience research project exploring
+                the mechanisms of sexual arousal. The project integrates findings from neuroimaging,
+                endocrinology, psychology, and computational modeling to provide a multi-level understanding
+                of arousal processes.
+            </p>
+            <p style="margin-top: 15px;">
+                <strong>Key Components:</strong>
+            </p>
+            <ul style="margin-left: 25px; margin-top: 10px; color: #555; line-height: 1.8;">
+                <li>Interactive Mermaid diagrams documenting neural pathways</li>
+                <li>Comprehensive glossary with 100+ neuroscience terms</li>
+                <li>Annotated literature review of 30+ peer-reviewed papers</li>
+                <li>Python computational models of arousal dynamics</li>
+                <li>Interactive Jupyter notebooks for hands-on exploration</li>
+                <li>These interactive web visualizations</li>
+            </ul>
+            <p style="margin-top: 15px;">
+                <strong>Navigate to:</strong>
+                <a href="../../README.md" style="color: #3498db; text-decoration: none; font-weight: 600;">Main README</a> |
+                <a href="../../docs/glossary.md" style="color: #3498db; text-decoration: none; font-weight: 600;">Glossary</a> |
+                <a href="../../docs/literature_review.md" style="color: #3498db; text-decoration: none; font-weight: 600;">Literature Review</a> |
+                <a href="../../notebooks/arousal_exploration.ipynb" style="color: #3498db; text-decoration: none; font-weight: 600;">Jupyter Notebook</a>
+            </p>
+        </div>
+
+        <footer>
+            <p>
+                <strong>Neural Mechanisms of Sexual Arousal</strong><br>
+                Interactive Visualization Gallery<br>
+                Part of the <a href="https://github.com/danindiana/Deep_Convo_GPT">Deep_Convo_GPT</a> Research Project
+            </p>
+            <p style="margin-top: 15px; font-size: 0.9em;">
+                Created: 2025-11-19 | Version 1.0<br>
+                Technologies: D3.js, Plotly, Python, HTML5/CSS3
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

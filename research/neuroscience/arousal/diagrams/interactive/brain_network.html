@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Network - Sexual Arousal Systems</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        #network {
+            width: 100%;
+            height: 700px;
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            background: #fafafa;
+        }
+
+        .node {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .node:hover {
+            stroke-width: 3px;
+        }
+
+        .node-label {
+            font-size: 12px;
+            font-weight: 600;
+            pointer-events: none;
+            text-shadow: 0 0 3px white, 0 0 3px white, 0 0 3px white;
+        }
+
+        .link {
+            stroke: #95a5a6;
+            stroke-opacity: 0.6;
+            fill: none;
+        }
+
+        .link-excitatory {
+            stroke: #27ae60;
+        }
+
+        .link-inhibitory {
+            stroke: #e74c3c;
+        }
+
+        .link-modulatory {
+            stroke: #3498db;
+            stroke-dasharray: 5,5;
+        }
+
+        .controls {
+            margin: 20px 0;
+            padding: 20px;
+            background: #ecf0f1;
+            border-radius: 10px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.9em;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #bdc3c7;
+            background: white;
+            font-size: 0.9em;
+        }
+
+        .legend {
+            margin-top: 20px;
+            padding: 15px;
+            background: #ecf0f1;
+            border-radius: 10px;
+        }
+
+        .legend-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .legend-items {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #34495e;
+        }
+
+        .legend-line {
+            width: 30px;
+            height: 3px;
+        }
+
+        .info-panel {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 300px;
+            display: none;
+        }
+
+        .info-panel.active {
+            display: block;
+        }
+
+        .info-title {
+            font-weight: 600;
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .info-content {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .info-close {
+            float: right;
+            cursor: pointer;
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Brain Network Visualization</h1>
+        <p class="subtitle">Interactive network of brain regions involved in sexual arousal</p>
+
+        <div class="controls">
+            <div class="control-group">
+                <label>Connection Type:</label>
+                <select id="connectionFilter">
+                    <option value="all">All Connections</option>
+                    <option value="excitatory">Excitatory Only</option>
+                    <option value="inhibitory">Inhibitory Only</option>
+                    <option value="modulatory">Modulatory Only</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Node Size:</label>
+                <select id="nodeSizeBy">
+                    <option value="importance">By Importance</option>
+                    <option value="connections">By Connections</option>
+                    <option value="uniform">Uniform</option>
+                </select>
+            </div>
+            <button onclick="resetSimulation()">Reset Layout</button>
+            <button onclick="togglePhysics()">Toggle Physics</button>
+        </div>
+
+        <div id="network"></div>
+
+        <div class="legend">
+            <div class="legend-title">Legend</div>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #e74c3c;"></div>
+                    <span>Limbic System</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #3498db;"></div>
+                    <span>Cortical Regions</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #2ecc71;"></div>
+                    <span>Subcortical</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #f39c12;"></div>
+                    <span>Brainstem/Spinal</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: #27ae60;"></div>
+                    <span>Excitatory</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: #e74c3c;"></div>
+                    <span>Inhibitory</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: #3498db;"></div>
+                    <span>Modulatory</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="info-panel" class="info-panel">
+        <span class="info-close" onclick="closeInfo()">✕</span>
+        <div class="info-title" id="info-title"></div>
+        <div class="info-content" id="info-content"></div>
+    </div>
+
+    <div id="tooltip" class="tooltip"></div>
+
+    <script>
+        // Network data: brain regions and connections
+        const nodes = [
+            // Cortical regions (blue)
+            { id: 'PFC', name: 'Prefrontal Cortex', group: 'cortical', importance: 8, description: 'Executive control, conscious regulation of arousal. Can initiate or inhibit sexual response.' },
+            { id: 'ACC', name: 'Anterior Cingulate', group: 'cortical', importance: 9, description: 'Attention allocation, emotional processing. Directs focus to arousal stimuli.' },
+            { id: 'Insula', name: 'Insula', group: 'cortical', importance: 9, description: 'Interoceptive awareness. Creates conscious experience of bodily arousal.' },
+
+            // Limbic regions (red)
+            { id: 'Amygdala', name: 'Amygdala', group: 'limbic', importance: 10, description: 'Emotional processing center. Assesses salience and emotional significance of sexual stimuli.' },
+            { id: 'Hippocampus', name: 'Hippocampus', group: 'limbic', importance: 7, description: 'Memory and context. Retrieves sexual memories and contextual associations.' },
+            { id: 'Hypothalamus', name: 'Hypothalamus', group: 'limbic', importance: 10, description: 'Master arousal regulator. Integrates neural, hormonal, and autonomic signals.' },
+            { id: 'NAcc', name: 'Nucleus Accumbens', group: 'limbic', importance: 9, description: 'Reward center. Dopamine release creates motivation and pleasure.' },
+
+            // Subcortical (green)
+            { id: 'VTA', name: 'Ventral Tegmental Area', group: 'subcortical', importance: 8, description: 'Dopamine source. Projects to NAcc, drives reward and motivation.' },
+            { id: 'Thalamus', name: 'Thalamus', group: 'subcortical', importance: 7, description: 'Sensory relay station. Routes sensory information to cortex.' },
+            { id: 'Pituitary', name: 'Pituitary Gland', group: 'subcortical', importance: 8, description: 'Master endocrine gland. Releases oxytocin, prolactin, LH, FSH.' },
+
+            // Brainstem/Spinal (orange)
+            { id: 'Brainstem', name: 'Brainstem', group: 'brainstem', importance: 7, description: 'Autonomic control centers. Regulates cardiovascular and respiratory responses.' },
+            { id: 'Spinal', name: 'Spinal Cord', group: 'brainstem', importance: 8, description: 'Reflex integration. Mediates genital reflexes and sensory relay.' },
+        ];
+
+        const links = [
+            // Cortical → Limbic
+            { source: 'PFC', target: 'Hypothalamus', type: 'modulatory', strength: 0.8 },
+            { source: 'PFC', target: 'Amygdala', type: 'inhibitory', strength: 0.7 },
+            { source: 'ACC', target: 'Amygdala', type: 'excitatory', strength: 0.9 },
+            { source: 'Insula', target: 'Amygdala', type: 'modulatory', strength: 0.8 },
+
+            // Limbic interconnections
+            { source: 'Amygdala', target: 'Hypothalamus', type: 'excitatory', strength: 0.9 },
+            { source: 'Hippocampus', target: 'Hypothalamus', type: 'modulatory', strength: 0.7 },
+            { source: 'Hypothalamus', target: 'Pituitary', type: 'excitatory', strength: 1.0 },
+            { source: 'NAcc', target: 'Hypothalamus', type: 'excitatory', strength: 0.8 },
+            { source: 'VTA', target: 'NAcc', type: 'excitatory', strength: 1.0 },
+            { source: 'Amygdala', target: 'NAcc', type: 'modulatory', strength: 0.7 },
+
+            // Descending pathways
+            { source: 'Hypothalamus', target: 'Brainstem', type: 'excitatory', strength: 0.9 },
+            { source: 'Hypothalamus', target: 'Spinal', type: 'excitatory', strength: 0.8 },
+            { source: 'Brainstem', target: 'Spinal', type: 'excitatory', strength: 0.9 },
+
+            // Sensory feedback (ascending)
+            { source: 'Spinal', target: 'Thalamus', type: 'excitatory', strength: 0.8 },
+            { source: 'Thalamus', target: 'Insula', type: 'excitatory', strength: 0.9 },
+            { source: 'Thalamus', target: 'ACC', type: 'excitatory', strength: 0.8 },
+            { source: 'Spinal', target: 'Amygdala', type: 'excitatory', strength: 0.7 },
+        ];
+
+        // Color mapping
+        const colorMap = {
+            'cortical': '#3498db',
+            'limbic': '#e74c3c',
+            'subcortical': '#2ecc71',
+            'brainstem': '#f39c12'
+        };
+
+        // Set up SVG
+        const width = document.getElementById('network').clientWidth;
+        const height = 700;
+
+        const svg = d3.select('#network')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height);
+
+        const g = svg.append('g');
+
+        // Zoom behavior
+        const zoom = d3.zoom()
+            .scaleExtent([0.5, 3])
+            .on('zoom', (event) => {
+                g.attr('transform', event.transform);
+            });
+
+        svg.call(zoom);
+
+        // Tooltip
+        const tooltip = d3.select('#tooltip');
+
+        // Force simulation
+        let simulation = d3.forceSimulation(nodes)
+            .force('link', d3.forceLink(links).id(d => d.id).distance(d => 100 / d.strength))
+            .force('charge', d3.forceManyBody().strength(-500))
+            .force('center', d3.forceCenter(width / 2, height / 2))
+            .force('collision', d3.forceCollide().radius(d => getNodeRadius(d) + 20));
+
+        let physicsEnabled = true;
+
+        // Draw links
+        const link = g.append('g')
+            .selectAll('path')
+            .data(links)
+            .enter().append('path')
+            .attr('class', d => `link link-${d.type}`)
+            .attr('stroke-width', d => d.strength * 3)
+            .attr('marker-end', d => `url(#arrow-${d.type})`);
+
+        // Define arrow markers
+        const defs = svg.append('defs');
+        ['excitatory', 'inhibitory', 'modulatory'].forEach(type => {
+            defs.append('marker')
+                .attr('id', `arrow-${type}`)
+                .attr('viewBox', '0 -5 10 10')
+                .attr('refX', 25)
+                .attr('refY', 0)
+                .attr('markerWidth', 6)
+                .attr('markerHeight', 6)
+                .attr('orient', 'auto')
+                .append('path')
+                .attr('d', 'M0,-5L10,0L0,5')
+                .attr('fill', type === 'excitatory' ? '#27ae60' : type === 'inhibitory' ? '#e74c3c' : '#3498db');
+        });
+
+        // Draw nodes
+        const node = g.append('g')
+            .selectAll('g')
+            .data(nodes)
+            .enter().append('g')
+            .attr('class', 'node')
+            .call(d3.drag()
+                .on('start', dragstarted)
+                .on('drag', dragged)
+                .on('end', dragended));
+
+        node.append('circle')
+            .attr('r', d => getNodeRadius(d))
+            .attr('fill', d => colorMap[d.group])
+            .attr('stroke', '#34495e')
+            .attr('stroke-width', 2);
+
+        node.append('text')
+            .attr('class', 'node-label')
+            .attr('dy', d => getNodeRadius(d) + 15)
+            .attr('text-anchor', 'middle')
+            .text(d => d.name);
+
+        // Node interactions
+        node.on('click', showInfo)
+            .on('mouseover', function(event, d) {
+                tooltip.style('opacity', 1)
+                    .html(`<strong>${d.name}</strong><br>${d.description.substring(0, 100)}...`)
+                    .style('left', (event.pageX + 10) + 'px')
+                    .style('top', (event.pageY - 10) + 'px');
+            })
+            .on('mouseout', function() {
+                tooltip.style('opacity', 0);
+            });
+
+        // Simulation tick
+        simulation.on('tick', () => {
+            link.attr('d', d => {
+                const dx = d.target.x - d.source.x;
+                const dy = d.target.y - d.source.y;
+                const dr = Math.sqrt(dx * dx + dy * dy);
+                return `M${d.source.x},${d.source.y}A${dr},${dr} 0 0,1 ${d.target.x},${d.target.y}`;
+            });
+
+            node.attr('transform', d => `translate(${d.x},${d.y})`);
+        });
+
+        // Helper functions
+        function getNodeRadius(d) {
+            const sizeMode = document.getElementById('nodeSizeBy').value;
+            if (sizeMode === 'uniform') return 15;
+            if (sizeMode === 'importance') return 8 + d.importance;
+            if (sizeMode === 'connections') {
+                const connections = links.filter(l => l.source.id === d.id || l.target.id === d.id).length;
+                return 8 + connections * 2;
+            }
+            return 15;
+        }
+
+        function showInfo(event, d) {
+            document.getElementById('info-title').textContent = d.name;
+            document.getElementById('info-content').textContent = d.description;
+            document.getElementById('info-panel').classList.add('active');
+        }
+
+        function closeInfo() {
+            document.getElementById('info-panel').classList.remove('active');
+        }
+
+        function resetSimulation() {
+            simulation.alpha(1).restart();
+        }
+
+        function togglePhysics() {
+            if (physicsEnabled) {
+                simulation.stop();
+                physicsEnabled = false;
+            } else {
+                simulation.alpha(1).restart();
+                physicsEnabled = true;
+            }
+        }
+
+        // Drag functions
+        function dragstarted(event) {
+            if (!event.active && physicsEnabled) simulation.alphaTarget(0.3).restart();
+            event.subject.fx = event.subject.x;
+            event.subject.fy = event.subject.y;
+        }
+
+        function dragged(event) {
+            event.subject.fx = event.x;
+            event.subject.fy = event.y;
+        }
+
+        function dragended(event) {
+            if (!event.active && physicsEnabled) simulation.alphaTarget(0);
+            event.subject.fx = null;
+            event.subject.fy = null;
+        }
+
+        // Connection filter
+        document.getElementById('connectionFilter').addEventListener('change', function() {
+            const filterType = this.value;
+            link.style('opacity', d => {
+                if (filterType === 'all') return 0.6;
+                return d.type === filterType ? 0.8 : 0.1;
+            });
+        });
+
+        // Node size update
+        document.getElementById('nodeSizeBy').addEventListener('change', function() {
+            node.select('circle')
+                .transition()
+                .duration(500)
+                .attr('r', d => getNodeRadius(d));
+
+            node.select('text')
+                .transition()
+                .duration(500)
+                .attr('dy', d => getNodeRadius(d) + 15);
+        });
+    </script>
+</body>
+</html>

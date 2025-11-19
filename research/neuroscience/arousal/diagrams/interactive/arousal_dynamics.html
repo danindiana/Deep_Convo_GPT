@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arousal Dynamics - Interactive Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .controls {
+            background: #ecf0f1;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95em;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+        }
+
+        .value-display {
+            background: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 600;
+            color: #3498db;
+        }
+
+        button {
+            padding: 12px 24px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .info-box {
+            background: #fff3cd;
+            border-left: 4px solid #f39c12;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info-box h3 {
+            margin-top: 0;
+            color: #856404;
+        }
+
+        #plot {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Arousal Dynamics Dashboard</h1>
+        <p class="subtitle">Interactive exploration of the dual control model</p>
+
+        <div class="info-box">
+            <h3>About the Dual Control Model</h3>
+            <p>
+                Sexual arousal emerges from the competition between two processes:
+                <strong>Excitation (E)</strong> - driven by sexual stimuli, and
+                <strong>Inhibition (I)</strong> - built up over time to regulate arousal.
+                Net arousal = E - I. Adjust the parameters below to see how individual differences affect arousal dynamics.
+            </p>
+        </div>
+
+        <div class="controls">
+            <h3 style="margin-top: 0;">Model Parameters</h3>
+            <div class="control-grid">
+                <div class="control-group">
+                    <label>Excitation Rate (α): <span class="value-display" id="alpha-value">1.5</span></label>
+                    <input type="range" id="alpha" min="0.3" max="3.0" step="0.1" value="1.5">
+                    <small>How quickly arousal responds to stimuli</small>
+                </div>
+
+                <div class="control-group">
+                    <label>Inhibition Rate (β): <span class="value-display" id="beta-value">0.8</span></label>
+                    <input type="range" id="beta" min="0.1" max="2.0" step="0.1" value="0.8">
+                    <small>How quickly inhibition builds up</small>
+                </div>
+
+                <div class="control-group">
+                    <label>Coupling (γ): <span class="value-display" id="gamma-value">0.5</span></label>
+                    <input type="range" id="gamma" min="0.1" max="1.0" step="0.05" value="0.5">
+                    <small>How strongly inhibition suppresses excitation</small>
+                </div>
+
+                <div class="control-group">
+                    <label>Feedback (η): <span class="value-display" id="eta-value">0.2</span></label>
+                    <input type="range" id="eta" min="0.0" max="0.8" step="0.05" value="0.2">
+                    <small>Positive feedback strength (self-amplification)</small>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 15px;">
+                <button onclick="updatePlot()">Update Simulation</button>
+                <button onclick="resetParameters()">Reset to Defaults</button>
+            </div>
+        </div>
+
+        <div id="plot"></div>
+
+        <div class="info-box" style="background: #d4edda; border-color: #28a745;">
+            <h3 style="color: #155724;">Clinical Relevance</h3>
+            <p><strong>High α, Low β:</strong> Easily aroused, may have difficulty controlling arousal</p>
+            <p><strong>Low α, High β:</strong> Difficulty becoming aroused, may indicate arousal disorder</p>
+            <p><strong>Balanced:</strong> Normal arousal response with good regulation</p>
+            <p><strong>High γ:</strong> Strong inhibitory control, anxiety may play a role</p>
+        </div>
+    </div>
+
+    <script>
+        // Arousal model simulation
+        function simulateArousal(alpha, beta, gamma, eta, duration = 100, dt = 0.1) {
+            const steps = Math.floor(duration / dt);
+            const t = [];
+            const E = [];
+            const I = [];
+            const arousal = [];
+
+            let e = 0.1; // initial excitation
+            let i = 0.0; // initial inhibition
+
+            // Pulse stimulus: on from t=10 to t=50
+            const stimulus = (time) => (time > 10 && time < 50) ? 1.0 : 0.0;
+
+            for (let step = 0; step < steps; step++) {
+                const time = step * dt;
+                t.push(time);
+
+                const s = stimulus(time);
+
+                // Calculate derivatives (Euler method)
+                const feedback = eta * e * e / (1 + e * e);
+                const dE = alpha * s - gamma * i * e - 0.1 * e + feedback;
+                const dI = beta * e - i;
+
+                // Update states
+                e += dE * dt;
+                i += dI * dt;
+
+                // Prevent negative values
+                e = Math.max(0, e);
+                i = Math.max(0, i);
+
+                E.push(e);
+                I.push(i);
+                arousal.push(e - i);
+            }
+
+            return { t, E, I, arousal };
+        }
+
+        function updatePlot() {
+            const alpha = parseFloat(document.getElementById('alpha').value);
+            const beta = parseFloat(document.getElementById('beta').value);
+            const gamma = parseFloat(document.getElementById('gamma').value);
+            const eta = parseFloat(document.getElementById('eta').value);
+
+            const data = simulateArousal(alpha, beta, gamma, eta);
+
+            const traces = [
+                {
+                    x: data.t,
+                    y: data.E,
+                    name: 'Excitation (E)',
+                    type: 'scatter',
+                    mode: 'lines',
+                    line: { color: '#27ae60', width: 2.5 },
+                    yaxis: 'y2'
+                },
+                {
+                    x: data.t,
+                    y: data.I,
+                    name: 'Inhibition (I)',
+                    type: 'scatter',
+                    mode: 'lines',
+                    line: { color: '#e74c3c', width: 2.5 },
+                    yaxis: 'y2'
+                },
+                {
+                    x: data.t,
+                    y: data.arousal,
+                    name: 'Net Arousal (E - I)',
+                    type: 'scatter',
+                    mode: 'lines',
+                    line: { color: '#3498db', width: 3.5 },
+                    fill: 'tozeroy',
+                    fillcolor: 'rgba(52, 152, 219, 0.2)'
+                },
+                // Stimulus reference
+                {
+                    x: data.t,
+                    y: data.t.map(ti => (ti > 10 && ti < 50) ? 1.0 : 0.0),
+                    name: 'Stimulus',
+                    type: 'scatter',
+                    mode: 'lines',
+                    line: { color: 'gray', width: 2, dash: 'dash' },
+                    opacity: 0.4,
+                    yaxis: 'y2'
+                }
+            ];
+
+            const layout = {
+                title: {
+                    text: 'Arousal Response to Pulse Stimulus<br><sub>Excitation, Inhibition, and Net Arousal over time</sub>',
+                    font: { size: 20, color: '#2c3e50' }
+                },
+                xaxis: {
+                    title: 'Time (arbitrary units)',
+                    showgrid: true,
+                    gridcolor: '#ecf0f1'
+                },
+                yaxis: {
+                    title: 'Net Arousal',
+                    titlefont: { color: '#3498db' },
+                    tickfont: { color: '#3498db' },
+                    showgrid: true,
+                    gridcolor: '#ecf0f1'
+                },
+                yaxis2: {
+                    title: 'E / I / Stimulus',
+                    titlefont: { color: '#7f8c8d' },
+                    tickfont: { color: '#7f8c8d' },
+                    overlaying: 'y',
+                    side: 'right'
+                },
+                hovermode: 'x unified',
+                plot_bgcolor: '#fafafa',
+                paper_bgcolor: 'white',
+                legend: {
+                    orientation: 'h',
+                    yanchor: 'bottom',
+                    y: 1.02,
+                    xanchor: 'right',
+                    x: 1
+                },
+                shapes: [
+                    {
+                        type: 'line',
+                        x0: 0,
+                        y0: 0,
+                        x1: 100,
+                        y1: 0,
+                        line: {
+                            color: 'gray',
+                            width: 1,
+                            dash: 'dot'
+                        }
+                    }
+                ],
+                annotations: [
+                    {
+                        x: 30,
+                        y: -0.5,
+                        xref: 'x',
+                        yref: 'y',
+                        text: 'Stimulus Active',
+                        showarrow: true,
+                        arrowhead: 2,
+                        ax: 0,
+                        ay: -40,
+                        font: { color: '#e67e22' }
+                    }
+                ]
+            };
+
+            Plotly.newPlot('plot', traces, layout, { responsive: true });
+        }
+
+        function resetParameters() {
+            document.getElementById('alpha').value = 1.5;
+            document.getElementById('beta').value = 0.8;
+            document.getElementById('gamma').value = 0.5;
+            document.getElementById('eta').value = 0.2;
+            updateValueDisplays();
+            updatePlot();
+        }
+
+        function updateValueDisplays() {
+            document.getElementById('alpha-value').textContent =
+                document.getElementById('alpha').value;
+            document.getElementById('beta-value').textContent =
+                document.getElementById('beta').value;
+            document.getElementById('gamma-value').textContent =
+                document.getElementById('gamma').value;
+            document.getElementById('eta-value').textContent =
+                document.getElementById('eta').value;
+        }
+
+        // Event listeners for sliders
+        ['alpha', 'beta', 'gamma', 'eta'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updateValueDisplays);
+        });
+
+        // Initial plot
+        updatePlot();
+    </script>
+</body>
+</html>

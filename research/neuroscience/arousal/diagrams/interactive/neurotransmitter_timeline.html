@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurotransmitter Timeline - Sexual Arousal</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .info-box {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .info-box h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .neurotransmitter-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .nt-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .nt-card h4 {
+            margin-top: 0;
+            font-size: 1.1em;
+        }
+
+        .nt-card p {
+            margin: 5px 0;
+            color: #555;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧬 Neurotransmitter Dynamics</h1>
+        <p class="subtitle">Interactive timeline of neurochemical changes during sexual arousal</p>
+
+        <div id="plot"></div>
+
+        <div class="info-box">
+            <h3>About This Visualization</h3>
+            <p>This timeline shows relative levels of key neurotransmitters throughout the sexual response cycle. Levels are shown as multiples of baseline (1.0 = normal resting level).</p>
+
+            <div class="neurotransmitter-info">
+                <div class="nt-card" style="border-color: #e74c3c;">
+                    <h4>Dopamine</h4>
+                    <p><strong>Role:</strong> Reward and motivation</p>
+                    <p><strong>Pattern:</strong> Rises during arousal, peaks before orgasm</p>
+                    <p><strong>Effect:</strong> Creates "wanting" and pleasure</p>
+                </div>
+
+                <div class="nt-card" style="border-color: #3498db;">
+                    <h4>Oxytocin</h4>
+                    <p><strong>Role:</strong> Bonding and orgasm</p>
+                    <p><strong>Pattern:</strong> Gradual rise, massive surge at orgasm</p>
+                    <p><strong>Effect:</strong> Triggers contractions, promotes bonding</p>
+                </div>
+
+                <div class="nt-card" style="border-color: #9b59b6;">
+                    <h4>Prolactin</h4>
+                    <p><strong>Role:</strong> Post-orgasmic inhibition</p>
+                    <p><strong>Pattern:</strong> Low during arousal, surges after orgasm</p>
+                    <p><strong>Effect:</strong> Creates refractory period, satisfaction</p>
+                </div>
+
+                <div class="nt-card" style="border-color: #f39c12;">
+                    <h4>Norepinephrine</h4>
+                    <p><strong>Role:</strong> Arousal and attention</p>
+                    <p><strong>Pattern:</strong> Rises with arousal, peaks during plateau</p>
+                    <p><strong>Effect:</strong> Alertness, cardiovascular activation</p>
+                </div>
+
+                <div class="nt-card" style="border-color: #2ecc71;">
+                    <h4>Serotonin</h4>
+                    <p><strong>Role:</strong> Mood regulation</p>
+                    <p><strong>Pattern:</strong> Stable, slight increase post-orgasm</p>
+                    <p><strong>Effect:</strong> Generally inhibitory, contentment</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate neurotransmitter data
+        function generateData() {
+            const time = [];
+            for (let i = 0; i <= 60; i += 0.3) {
+                time.push(i);
+            }
+
+            const arousalStart = 10;
+            const orgasmTime = 40;
+
+            // Dopamine: rises during arousal, peaks before orgasm
+            const dopamine = time.map(t => {
+                if (t < arousalStart) return 1.0;
+                if (t < orgasmTime) return 1.0 + 3.0 * (1 - Math.exp(-(t - arousalStart) / 5));
+                return 1.0 + 3.0 * Math.exp(-(t - orgasmTime) / 8);
+            });
+
+            // Oxytocin: gradual rise, surge at orgasm
+            const oxytocin = time.map(t => {
+                if (t < arousalStart) return 1.0;
+                if (t < orgasmTime) return 1.0 + 0.5 * (t - arousalStart) / (orgasmTime - arousalStart);
+                if (t < orgasmTime + 1) return 4.0;
+                return 1.5 + 2.5 * Math.exp(-(t - orgasmTime - 1) / 5);
+            });
+
+            // Prolactin: surge after orgasm
+            const prolactin = time.map(t => {
+                if (t < orgasmTime) return 1.0;
+                return 1.0 + 3.0 * Math.exp(-(t - orgasmTime) / 15);
+            });
+
+            // Norepinephrine: rises with arousal
+            const norepinephrine = time.map(t => {
+                if (t < arousalStart) return 1.0;
+                if (t < orgasmTime) return 1.0 + 2.0 * (1 - Math.exp(-(t - arousalStart) / 8));
+                return 1.0 + 2.0 * Math.exp(-(t - orgasmTime) / 10);
+            });
+
+            // Serotonin: stable with slight post-orgasm increase
+            const serotonin = time.map(t => {
+                if (t <= orgasmTime) return 1.0;
+                return 1.0 + 0.3 * (1 - Math.exp(-(t - orgasmTime) / 20));
+            });
+
+            return { time, dopamine, oxytocin, prolactin, norepinephrine, serotonin };
+        }
+
+        const data = generateData();
+
+        // Create traces
+        const traces = [
+            {
+                x: data.time,
+                y: data.dopamine,
+                name: 'Dopamine',
+                type: 'scatter',
+                mode: 'lines',
+                line: { color: '#e74c3c', width: 3 },
+                hovertemplate: '<b>Dopamine</b><br>Time: %{x:.1f} min<br>Level: %{y:.2f}x baseline<extra></extra>'
+            },
+            {
+                x: data.time,
+                y: data.oxytocin,
+                name: 'Oxytocin',
+                type: 'scatter',
+                mode: 'lines',
+                line: { color: '#3498db', width: 3 },
+                hovertemplate: '<b>Oxytocin</b><br>Time: %{x:.1f} min<br>Level: %{y:.2f}x baseline<extra></extra>'
+            },
+            {
+                x: data.time,
+                y: data.prolactin,
+                name: 'Prolactin',
+                type: 'scatter',
+                mode: 'lines',
+                line: { color: '#9b59b6', width: 3 },
+                hovertemplate: '<b>Prolactin</b><br>Time: %{x:.1f} min<br>Level: %{y:.2f}x baseline<extra></extra>'
+            },
+            {
+                x: data.time,
+                y: data.norepinephrine,
+                name: 'Norepinephrine',
+                type: 'scatter',
+                mode: 'lines',
+                line: { color: '#f39c12', width: 3 },
+                hovertemplate: '<b>Norepinephrine</b><br>Time: %{x:.1f} min<br>Level: %{y:.2f}x baseline<extra></extra>'
+            },
+            {
+                x: data.time,
+                y: data.serotonin,
+                name: 'Serotonin',
+                type: 'scatter',
+                mode: 'lines',
+                line: { color: '#2ecc71', width: 3 },
+                hovertemplate: '<b>Serotonin</b><br>Time: %{x:.1f} min<br>Level: %{y:.2f}x baseline<extra></extra>'
+            }
+        ];
+
+        // Layout
+        const layout = {
+            title: {
+                text: 'Neurotransmitter Levels Throughout Arousal Cycle',
+                font: { size: 20, color: '#2c3e50' }
+            },
+            xaxis: {
+                title: 'Time (minutes)',
+                showgrid: true,
+                gridcolor: '#ecf0f1'
+            },
+            yaxis: {
+                title: 'Relative Level (× baseline)',
+                showgrid: true,
+                gridcolor: '#ecf0f1'
+            },
+            hovermode: 'x unified',
+            plot_bgcolor: '#fafafa',
+            paper_bgcolor: 'white',
+            legend: {
+                orientation: 'v',
+                yanchor: 'top',
+                y: 0.98,
+                xanchor: 'right',
+                x: 0.98,
+                bgcolor: 'rgba(255, 255, 255, 0.9)',
+                bordercolor: '#bdc3c7',
+                borderwidth: 1
+            },
+            shapes: [
+                // Baseline phase
+                {
+                    type: 'rect',
+                    xref: 'x',
+                    yref: 'paper',
+                    x0: 0,
+                    y0: 0,
+                    x1: 10,
+                    y1: 1,
+                    fillcolor: 'gray',
+                    opacity: 0.1,
+                    line: { width: 0 }
+                },
+                // Arousal phase
+                {
+                    type: 'rect',
+                    xref: 'x',
+                    yref: 'paper',
+                    x0: 10,
+                    y0: 0,
+                    x1: 40,
+                    y1: 1,
+                    fillcolor: 'orange',
+                    opacity: 0.1,
+                    line: { width: 0 }
+                },
+                // Orgasm
+                {
+                    type: 'rect',
+                    xref: 'x',
+                    yref: 'paper',
+                    x0: 40,
+                    y0: 0,
+                    x1: 40.5,
+                    y1: 1,
+                    fillcolor: 'red',
+                    opacity: 0.2,
+                    line: { width: 0 }
+                },
+                // Resolution
+                {
+                    type: 'rect',
+                    xref: 'x',
+                    yref: 'paper',
+                    x0: 40.5,
+                    y0: 0,
+                    x1: 55,
+                    y1: 1,
+                    fillcolor: 'blue',
+                    opacity: 0.1,
+                    line: { width: 0 }
+                }
+            ],
+            annotations: [
+                {
+                    x: 5,
+                    y: 4.3,
+                    xref: 'x',
+                    yref: 'y',
+                    text: 'Baseline',
+                    showarrow: false,
+                    font: { size: 12, color: '#7f8c8d' }
+                },
+                {
+                    x: 25,
+                    y: 4.3,
+                    xref: 'x',
+                    yref: 'y',
+                    text: 'Arousal',
+                    showarrow: false,
+                    font: { size: 12, color: '#e67e22' }
+                },
+                {
+                    x: 40.25,
+                    y: 4.3,
+                    xref: 'x',
+                    yref: 'y',
+                    text: 'Orgasm',
+                    showarrow: false,
+                    font: { size: 12, color: '#c0392b' }
+                },
+                {
+                    x: 47.5,
+                    y: 4.3,
+                    xref: 'x',
+                    yref: 'y',
+                    text: 'Resolution',
+                    showarrow: false,
+                    font: { size: 12, color: '#2980b9' }
+                }
+            ]
+        };
+
+        // Plot
+        Plotly.newPlot('plot', traces, layout, { responsive: true });
+    </script>
+</body>
+</html>
